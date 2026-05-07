@@ -1,8 +1,16 @@
 <Solution>
-  <Folder Name="/src/" />
+  <Folder Name="/src/">
+    <File Path=".gitignore" />
+  </Folder>
   <Folder Name="/src/Backend/">
     <Project Path="src/Backend/MyRecipeBook.API/MyRecipeBook.API.csproj" Id="b8304a5d-d09d-4f10-a56a-6e3bd8f8f38c" />
+    <Project Path="src/Backend/MyRecipeBook.Application/MyRecipeBook.Application.csproj" Id="70746b86-9822-4f3a-8c79-fa98cef0e4d9" />
+    <Project Path="src/Backend/MyRecipeBook.Domain/MyRecipeBook.Domain.csproj" Id="e25b544f-2aef-47fc-96fe-768112625275" />
+    <Project Path="src/Backend/MyRecipeBook.Infraestructure/MyRecipeBook.Infraestructure.csproj" Id="e0a1e7f8-cc50-4dd7-aa7d-701d9513e560" />
   </Folder>
-  <Folder Name="/src/Shared/" />
+  <Folder Name="/src/Shared/">
+    <Project Path="src/Shared/MyRecipeBook.Communication/MyRecipeBook.Communication.csproj" Id="37bea0b9-e0df-4620-a309-aca93cf14378" />
+    <Project Path="src/Shared/MyRecipeBook.Exceptions/MyRecipeBook.Exceptions.csproj" Id="2d74325f-d688-4cc8-a172-f64ca07ec528" />
+  </Folder>
   <Folder Name="/tests/" />
 </Solution>
