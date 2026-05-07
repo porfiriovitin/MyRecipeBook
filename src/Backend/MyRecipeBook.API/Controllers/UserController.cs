@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyRecipeBook.Application.UseCases;
+using MyRecipeBook.Application.UseCases.User;
 using MyRecipeBook.Communication.Enums;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
@@ -27,6 +27,15 @@ public class UserController : ControllerBase
             }
 
             return StatusCode(StatusCodes.Status201Created, result);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new PayloadResponse<object>
+            {
+                Status = nameof(ResponseStatus.Error),
+                Message = ex.Message,
+                Data = null
+            });
         }
         catch (Exception ex)
         {
