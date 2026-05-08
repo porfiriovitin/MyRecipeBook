@@ -3,7 +3,7 @@ using MyRecipeBook.Communication.Requests;
 
 namespace MyRecipeBook.Application.UseCases.User;
 
-public class RegisterUserValidator : AbstractValidator<RequestRegisterUserJson>
+public class RegisterUserValidator : AbstractValidator<RequestRegisterUserAccountJson>
 {
     public RegisterUserValidator()
     {
