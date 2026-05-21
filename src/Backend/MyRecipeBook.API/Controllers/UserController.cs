@@ -3,6 +3,7 @@ using MyRecipeBook.Application.UseCases.User;
 using MyRecipeBook.Communication.Enums;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Exceptions.ExceptionsBase;
 
 namespace MyRecipeBook.API.Controllers;
 
@@ -28,7 +29,7 @@ public class UserController : ControllerBase
 
             return StatusCode(StatusCodes.Status201Created, result);
         }
-        catch (ArgumentException ex)
+        catch (MyRecipeBookException ex)
         {
             return BadRequest(new PayloadResponse<object>
             {

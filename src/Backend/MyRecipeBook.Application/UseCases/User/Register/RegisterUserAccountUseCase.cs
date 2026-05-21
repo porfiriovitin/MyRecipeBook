@@ -1,6 +1,8 @@
 ﻿using MyRecipeBook.Communication.Enums;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Exceptions;
+using MyRecipeBook.Exceptions.ExceptionsBase;
 
 namespace MyRecipeBook.Application.UseCases.User;
 
@@ -24,7 +26,7 @@ public class RegisterUserAccountUseCase
         return new PayloadResponse<ResponseRegisteredUserJson>
         {
             Status = nameof(ResponseStatus.Success),
-            Message = "Usuário cadastrado com sucesso",
+            Message = ResourceMessagesException.USER_REGISTERED_SUCESSFULLY,
             Data = new ResponseRegisteredUserJson(request.Name, request.Email)
         };
     }
@@ -38,7 +40,7 @@ public class RegisterUserAccountUseCase
         /// :: If the validation fails, throw an exception with the error messages.
         if (!result.IsValid)
         {
-            throw new ArgumentException(string.Join(" | ", result.Errors.Select(e => e.ErrorMessage)));
+            throw new ErrorOnValidationException(string.Join(" | ", result.Errors.Select(e => e.ErrorMessage)));
         }
 
     }

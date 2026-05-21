@@ -61,6 +61,15 @@ namespace MyRecipeBook.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a User successfully registered!.
+        /// </summary>
+        public static string USER_REGISTERED_SUCESSFULLY {
+            get {
+                return ResourceManager.GetString("USER_REGISTERED_SUCESSFULLY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! Email is invalid..
         /// </summary>
         public static string VALIDATION_EMAIL_INVALID {
