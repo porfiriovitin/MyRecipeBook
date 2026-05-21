@@ -4,9 +4,9 @@ using MyRecipeBook.Communication.Responses;
 
 namespace MyRecipeBook.Application.UseCases.User;
 
-public class RegisterUserUseCase
+public class RegisterUserAccountUseCase
 {
-    public PayloadResponse<ResponseRegisteredUserJson> Execute(RequestRegisterUserJson request)
+    public PayloadResponse<ResponseRegisteredUserJson> Execute(RequestRegisterUserAccountJson request)
     {
 
         /// :: Validate the request.
@@ -29,10 +29,10 @@ public class RegisterUserUseCase
         };
     }
 
-    private static void Validate(RequestRegisterUserJson request)
+    private static void Validate(RequestRegisterUserAccountJson request)
     {
         /// :: Validate the request using FluentValidation.
-        var validator = new RegisterUserValidator();
+        var validator = new RegisterUserAccountValidator();
         var result = validator.Validate(request);
 
         /// :: If the validation fails, throw an exception with the error messages.

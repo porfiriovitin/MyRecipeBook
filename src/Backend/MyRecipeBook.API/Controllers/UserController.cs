@@ -13,11 +13,11 @@ public class UserController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(PayloadResponse<ResponseRegisteredUserJson>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(PayloadResponse<object>), StatusCodes.Status400BadRequest)]
-    public IActionResult Register([FromBody] RequestRegisterUserJson request)
+    public IActionResult Register([FromBody] RequestRegisterUserAccountJson request)
     {
         try
         {
-            var useCase = new RegisterUserUseCase();
+            var useCase = new RegisterUserAccountUseCase();
 
             PayloadResponse<ResponseRegisteredUserJson> result = useCase.Execute(request);
 

@@ -1,6 +1,9 @@
 <Solution>
   <Folder Name="/src/">
+    <File Path=".env" />
     <File Path=".gitignore" />
+    <File Path="docker-compose.yaml" />
+    <File Path="example.env" />
   </Folder>
   <Folder Name="/src/Backend/">
     <Project Path="src/Backend/MyRecipeBook.API/MyRecipeBook.API.csproj" Id="b8304a5d-d09d-4f10-a56a-6e3bd8f8f38c" />
