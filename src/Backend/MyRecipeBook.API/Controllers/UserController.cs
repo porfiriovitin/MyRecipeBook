@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyRecipeBook.Application.UseCases.User;
-using MyRecipeBook.Communication.Enums;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
-using MyRecipeBook.Exceptions.ExceptionsBase;
 
 namespace MyRecipeBook.API.Controllers;
 
