@@ -10,7 +10,6 @@ public class RegisterUserAccountUseCase
 {
     public PayloadResponse<ResponseRegisteredUserJson> Execute(RequestRegisterUserAccountJson request)
     {
-
         /// :: Validate the request.
         Validate(request);
 
