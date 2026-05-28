@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyRecipeBook.Application.UseCases.User;
+using MyRecipeBook.Communication.Enums;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 
@@ -16,8 +17,13 @@ public class UserController : ControllerBase
     {
             var useCase = new RegisterUserAccountUseCase();
 
-            PayloadResponse<ResponseRegisteredUserJson> result = useCase.Execute(request);
+            ResponseRegisteredUserJson result = useCase.Execute(request);
 
-            return StatusCode(StatusCodes.Status201Created, result);
+            return StatusCode(StatusCodes.Status201Created, new PayloadResponse<ResponseRegisteredUserJson>
+            {
+                Status = nameof(ResponseStatus.Success),
+                Message = "User account registered successfully.",
+                Data = result
+            });
     }
 }

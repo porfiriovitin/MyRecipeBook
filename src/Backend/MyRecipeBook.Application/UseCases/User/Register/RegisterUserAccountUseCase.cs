@@ -8,7 +8,7 @@ namespace MyRecipeBook.Application.UseCases.User;
 
 public class RegisterUserAccountUseCase
 {
-    public PayloadResponse<ResponseRegisteredUserJson> Execute(RequestRegisterUserAccountJson request)
+    public ResponseRegisteredUserJson Execute(RequestRegisterUserAccountJson request)
     {
         /// :: Validate the request.
         Validate(request);
@@ -22,12 +22,11 @@ public class RegisterUserAccountUseCase
         /// :: Save the user to the database.
 
 
-        return new PayloadResponse<ResponseRegisteredUserJson>
-        {
-            Status = nameof(ResponseStatus.Success),
-            Message = ResourceMessagesException.USER_REGISTERED_SUCESSFULLY,
-            Data = new ResponseRegisteredUserJson(request.Name, request.Email)
-        };
+        return new ResponseRegisteredUserJson(
+            Name: request.Name,
+            Email: request.Email
+        );
+      
     }
 
     private static void Validate(RequestRegisterUserAccountJson request)
