@@ -1,7 +1,6 @@
-﻿using MyRecipeBook.Communication.Enums;
+﻿using Mapster;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
-using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
 
 namespace MyRecipeBook.Application.UseCases.User;
@@ -11,12 +10,12 @@ public class RegisterUserAccountUseCase
     public ResponseRegisteredUserJson Execute(RequestRegisterUserAccountJson request)
     {
         /// :: Validate the request.
-        Validate(request);
+        ValidateAndThrowOnFailures(request);
 
         /// :: Maps the request to the domain model.
+        var user = request.Adapt<Domain.Entities.User>();
 
-
-        /// :: Hash the password.
+        /// :: Hash the passwords
 
 
         /// :: Save the user to the database.
@@ -29,7 +28,7 @@ public class RegisterUserAccountUseCase
       
     }
 
-    private static void Validate(RequestRegisterUserAccountJson request)
+    private static void ValidateAndThrowOnFailures(RequestRegisterUserAccountJson request)
     {
         /// :: Validate the request using FluentValidation.
         var validator = new RegisterUserAccountValidator();
