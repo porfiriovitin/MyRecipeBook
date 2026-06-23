@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:16
-    container_name: ${CONTAINER_NAME}
+    container_name: MyRecipeBook
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}

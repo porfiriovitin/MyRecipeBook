@@ -1,17 +1,20 @@
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using MyRecipeBook.API.Filters;
+using MyRecipeBook.Application;
+using MyRecipeBook.Infraestructure;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+/// :: Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-MyRecipeBook.Infraestructure.DependencyInjectionExtension.AddInfrastructure(builder.Services);
-MyRecipeBook.Application.DependencyInjectionExtension.AddApplication(builder.Services);
+/// :: Dependecy injections.
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure();
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -33,7 +36,7 @@ var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocali
 
 app.UseRequestLocalization(localizationOptions.Value);
 
-// Configure the HTTP request pipeline.
+/// :: Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
