@@ -13,9 +13,9 @@ public class UserController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(PayloadResponse<ResponseRegisteredUserJson>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(PayloadResponse<object>), StatusCodes.Status400BadRequest)]
-    public IActionResult Register([FromBody] RequestRegisterUserAccountJson request, [FromServices] IRegisterUserAccountUseCase registerUserAccountUseCase)
+    public async Task<IActionResult> Register([FromBody] RequestRegisterUserAccountJson request, [FromServices] IRegisterUserAccountUseCase registerUserAccountUseCase)
     {
-            ResponseRegisteredUserJson result = registerUserAccountUseCase.Execute(request);
+            ResponseRegisteredUserJson result = await registerUserAccountUseCase.Execute(request);
 
             return StatusCode(StatusCodes.Status201Created, new PayloadResponse<ResponseRegisteredUserJson>
             {
