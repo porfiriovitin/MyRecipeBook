@@ -7,7 +7,7 @@
 .env
 
 # app settings.
-src\Backend\MyRecipeBook.API\appsettings.Development.json
+src/Backend/MyRecipeBook.API/appsettings.Development.json
 
 # User-specific files
 *.rsuser
