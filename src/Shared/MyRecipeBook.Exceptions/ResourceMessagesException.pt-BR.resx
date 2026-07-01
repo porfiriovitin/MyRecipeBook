@@ -123,6 +123,9 @@
   <data name="USER_REGISTERED_SUCESSFULLY" xml:space="preserve">
     <value>Usuário cadastrado com sucesso!</value>
   </data>
+  <data name="VALIDATION_EMAIL_ALREADY_EXISTS" xml:space="preserve">
+    <value>Oops! Esse email já está em uso.</value>
+  </data>
   <data name="VALIDATION_EMAIL_INVALID" xml:space="preserve">
     <value>Oops! O email é inválido.</value>
   </data>

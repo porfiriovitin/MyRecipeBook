@@ -16,6 +16,7 @@ namespace MyRecipeBook.Infraestructure
         {
             services.AddScoped<IPasswordHasher, Argon2PasswordHasher>();
             services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
+            services.AddScoped<IUserReadOnlyRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDbContext<MyRecipeBookDbContext>(options =>
