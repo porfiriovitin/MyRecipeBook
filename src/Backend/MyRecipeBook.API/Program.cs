@@ -22,6 +22,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
+/// :: Configure localization options for bilingual responses.
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     var supportedCultures = new List<CultureInfo> { new("en"), new("pt-BR"), new("es") };
@@ -40,8 +41,10 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 var app = builder.Build();
 
+/// :: Configure localization middleware.
 var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();
 
+/// :: Use the configured localization options in the request pipeline.
 app.UseRequestLocalization(localizationOptions.Value);
 
 /// :: Configure the HTTP request pipeline.
