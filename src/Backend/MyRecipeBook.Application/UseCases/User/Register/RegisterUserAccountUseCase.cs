@@ -56,8 +56,8 @@ public class RegisterUserAccountUseCase : IRegisterUserAccountUseCase
         var validator = new RegisterUserAccountValidator();
         var result = validator.Validate(request);
 
+        /// :: Check if the email already exists in the database.
         bool emailAlreadyExists = await _userReadOnlyRepository.ExistActiveUserWithEmail(request.Email);
-
         if (emailAlreadyExists) { 
             result.Errors.Add(new ValidationFailure("Email", ResourceMessagesException.VALIDATION_EMAIL_ALREADY_EXISTS));
         }
