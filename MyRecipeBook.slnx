@@ -15,5 +15,7 @@
     <Project Path="src/Shared/MyRecipeBook.Communication/MyRecipeBook.Communication.csproj" Id="37bea0b9-e0df-4620-a309-aca93cf14378" />
     <Project Path="src/Shared/MyRecipeBook.Exceptions/MyRecipeBook.Exceptions.csproj" Id="2d74325f-d688-4cc8-a172-f64ca07ec528" />
   </Folder>
-  <Folder Name="/tests/" />
+  <Folder Name="/tests/">
+    <Project Path="tests/Validators.Tests/Validators.Tests.csproj" Id="facfb115-a1fa-4c85-ae7a-f516bff13978" />
+  </Folder>
 </Solution>
