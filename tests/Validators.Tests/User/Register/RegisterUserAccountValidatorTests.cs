@@ -33,8 +33,7 @@ public class RegisterUserAccountValidatorTests
 
         /// :: Assert.
         result.IsValid.ShouldBeFalse();
-        result.Errors.ShouldContain(error =>
-            error.ErrorMessage == ResourceMessagesException.VALIDATION_NAME_REQUIRED);
+        result.Errors.ShouldContain(error => error.ErrorMessage == ResourceMessagesException.VALIDATION_NAME_REQUIRED);
     }
 
     [Fact]
@@ -49,8 +48,7 @@ public class RegisterUserAccountValidatorTests
 
         /// :: Assert.
         result.IsValid.ShouldBeFalse();
-        result.Errors.ShouldContain(error =>
-            error.ErrorMessage == ResourceMessagesException.VALIDATION_EMAIL_REQUIRED);
+        result.Errors.ShouldContain(error => error.ErrorMessage == ResourceMessagesException.VALIDATION_EMAIL_REQUIRED);
     }
 
     [Fact]
@@ -65,8 +63,7 @@ public class RegisterUserAccountValidatorTests
 
         /// :: Assert.
         result.IsValid.ShouldBeFalse();
-        result.Errors.ShouldContain(error =>
-            error.ErrorMessage == ResourceMessagesException.VALIDATION_EMAIL_INVALID);
+        result.Errors.ShouldContain(error => error.ErrorMessage == ResourceMessagesException.VALIDATION_EMAIL_INVALID);
     }
 
     [Fact]
@@ -81,8 +78,7 @@ public class RegisterUserAccountValidatorTests
 
         /// :: Assert.
         result.IsValid.ShouldBeFalse();
-        result.Errors.ShouldContain(error =>
-            error.ErrorMessage == ResourceMessagesException.VALIDATION_PASSWORD_REQUIRED);
+        result.Errors.ShouldContain(error => error.ErrorMessage == ResourceMessagesException.VALIDATION_PASSWORD_REQUIRED);
     }
 
     [Fact]
@@ -97,7 +93,6 @@ public class RegisterUserAccountValidatorTests
 
         /// :: Assert.
         result.IsValid.ShouldBeFalse();
-        result.Errors.ShouldContain(error =>
-            error.ErrorMessage == ResourceMessagesException.VALIDATION_PASSWORD_MIN_LENGTH);
+        result.Errors.ShouldContain(error => error.ErrorMessage == ResourceMessagesException.VALIDATION_PASSWORD_MIN_LENGTH);
     }
 }

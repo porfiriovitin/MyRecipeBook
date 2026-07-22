@@ -17,6 +17,7 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/CommomTestsUtilities/CommomTestsUtilities.csproj" Id="51b06b4c-2b69-4546-ba99-76e330272066" />
+    <Project Path="tests/UseCases.Tests/UseCases.Tests.csproj" Id="80253688-e64d-4ece-b04d-ecb9ae143fcc" />
     <Project Path="tests/Validators.Tests/Validators.Tests.csproj" Id="facfb115-a1fa-4c85-ae7a-f516bff13978" />
   </Folder>
 </Solution>
