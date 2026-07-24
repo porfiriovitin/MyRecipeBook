@@ -2,6 +2,7 @@
 using CommomTestsUtilities.Repositories;
 using CommomTestsUtilities.Requests;
 using MyRecipeBook.Application.UseCases.User;
+using Shouldly;
 
 namespace UseCases.Tests.User.Register;
 
@@ -16,10 +17,16 @@ public class RegisterUserAccountUseCaseTests
         var useCase = CreateUseCase();
 
         /// Act
+        var result = await useCase.Execute(request);
 
         /// Assert
+        result.ShouldNotBeNull();
+        result.Tokens.ShouldNotBeNull();
+        result.Name.ShouldBe(request.Name);
 
-
+        /// :: NOT IMPLEMENTED YET.
+        result.Tokens.AccessToken.ShouldBeNullOrEmpty();
+        result.Tokens.RefreshToken.ShouldBeNullOrEmpty();
     }
 
     private RegisterUserAccountUseCase CreateUseCase()
