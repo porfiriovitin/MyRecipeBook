@@ -6,6 +6,8 @@
 # dotenv files
 .env
 
+.agents/
+
 # app settings.
 src/Backend/MyRecipeBook.API/appsettings.Development.json
 

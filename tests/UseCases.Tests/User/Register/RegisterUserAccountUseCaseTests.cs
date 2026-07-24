@@ -62,8 +62,7 @@ public class RegisterUserAccountUseCaseTests
         });
     }
 
-
-    private RegisterUserAccountUseCase CreateUseCase(string? emailThatAlreadyExists = null)
+    private static RegisterUserAccountUseCase CreateUseCase(string? emailThatAlreadyExists = null)
     {
         var unitOfWork = IUnitOfWorkBuilder.Build();
         var userWriteOnlyRepository = IUserWriteOnlyRepositoryBuilder.Build();
