@@ -65,7 +65,7 @@ public class RegisterUserAccountUseCase : IRegisterUserAccountUseCase
         /// :: If the validation fails, throw an exception with the error messages.
         if (!result.IsValid )
         {
-            throw new ErrorOnValidationException(string.Join(" | ", result.Errors.Select(e => e.ErrorMessage)));
+            throw new ErrorOnValidationException([.. result.Errors.Select(error => error.ErrorMessage)]);
         }
 
 
