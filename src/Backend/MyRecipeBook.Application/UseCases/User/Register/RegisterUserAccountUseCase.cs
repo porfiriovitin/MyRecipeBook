@@ -67,9 +67,6 @@ public class RegisterUserAccountUseCase : IRegisterUserAccountUseCase
         {
             throw new ErrorOnValidationException([.. result.Errors.Select(error => error.ErrorMessage)]);
         }
-
-
     }
-
  
 }
