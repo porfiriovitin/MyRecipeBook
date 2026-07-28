@@ -1,12 +1,13 @@
 ﻿using CommomTestsUtilities.Requests;
 using Microsoft.AspNetCore.Mvc.Testing;
 using MyRecipeBook.Communication.Enums;
-using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Exceptions;
 using Shouldly;
+using System.Globalization;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using WebApi.Tests.InlineData;
 
 namespace WebApi.Tests.User.Register;
 
@@ -38,10 +39,14 @@ public class RegisterUserAccountTests : IClassFixture<WebApplicationFactory<Prog
         bodyData.GetProperty("tokens").GetProperty("accessToken").GetString().ShouldBeEmpty();
     }
 
-    [Fact]
-    public async Task Validate_ShouldBeAnErrorResponse_WhenNameIsEmpty()
+    [Theory]
+    [ClassData(typeof(CultureInlineData))]
+    public async Task Validate_ShouldBeAnErrorResponse_WhenNameIsEmpty(string culture)
     {
         var request = RequestRegisterUserAccountJsonBuilder.Build() with { Name = string.Empty };
+
+        _client.DefaultRequestHeaders.AcceptLanguage.Clear();
+        _client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(culture);
 
         var response = await _client.PostAsJsonAsync("/user", request);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -50,8 +55,10 @@ public class RegisterUserAccountTests : IClassFixture<WebApplicationFactory<Prog
 
         var responseData = await JsonDocument.ParseAsync(responseBody);
 
+        var expectedErrorMessage = ResourceMessagesException.ResourceManager.GetString("VALIDATION_NAME_REQUIRED", new CultureInfo(culture));
+
         responseData.RootElement.GetProperty("status").GetString().ShouldBe(nameof(ResponseStatus.Error));
-        responseData.RootElement.GetProperty("message").GetString().ShouldBe("Oops! Name is required");
+        responseData.RootElement.GetProperty("message").GetString().ShouldBe(expectedErrorMessage);
     }
 
 }
