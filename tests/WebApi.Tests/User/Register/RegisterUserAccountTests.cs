@@ -24,19 +24,18 @@ public class RegisterUserAccountTests : IClassFixture<WebApplicationFactory<Prog
     {
         var request = RequestRegisterUserAccountJsonBuilder.Build();
 
-        var response = await _client.PostAsJsonAsync("/users", request);
+        var response = await _client.PostAsJsonAsync("/user", request);
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
 
         await using var responseBody = await response.Content.ReadAsStreamAsync();
         
         var responseData = await JsonDocument.ParseAsync(responseBody);
         responseData.RootElement.GetProperty("status").GetString().ShouldBe(nameof(ResponseStatus.Success));
-        responseData.RootElement.GetProperty("Message").GetString().ShouldBe("User account registered successfully.");
+        responseData.RootElement.GetProperty("message").GetString().ShouldBe("User account registered successfully.");
 
         var bodyData = responseData.RootElement.GetProperty("data");
         bodyData.GetProperty("name").GetString().ShouldBe(request.Name);
         bodyData.GetProperty("tokens").GetProperty("accessToken").GetString().ShouldBeEmpty();
-
     }
 
     [Fact]
@@ -44,19 +43,15 @@ public class RegisterUserAccountTests : IClassFixture<WebApplicationFactory<Prog
     {
         var request = RequestRegisterUserAccountJsonBuilder.Build() with { Name = string.Empty };
 
-        var response = await _client.PostAsJsonAsync("/users", request);
+        var response = await _client.PostAsJsonAsync("/user", request);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
         await using var responseBody = await response.Content.ReadAsStreamAsync();
 
         var responseData = await JsonDocument.ParseAsync(responseBody);
 
-        var errors = responseData.RootElement.GetProperty("errors").EnumerateArray();
-        errors.ShouldSatisfyAllConditions( errorsList=>
-        {
-            errorsList.Count().ShouldBe(1);
-            errorsList.ShouldContain(error => error.GetString().IsNotEmpty() && error.GetString()!.Equals(ResourceMessagesException.VALIDATION_NAME_REQUIRED));
-        });
+        responseData.RootElement.GetProperty("status").GetString().ShouldBe(nameof(ResponseStatus.Error));
+        responseData.RootElement.GetProperty("message").GetString().ShouldBe("Oops! Name is required");
     }
 
 }
