@@ -11,11 +11,12 @@ using WebApi.Tests.InlineData;
 
 namespace WebApi.Tests.User.Register;
 
-public class RegisterUserAccountTests : IClassFixture<WebApplicationFactory<Program>>
+public class RegisterUserAccountTests : IClassFixture<MyRecipeBookApplicationFactory>
 {
+    private const string REQUEST_URI = "/user";
     private readonly HttpClient _client;
 
-    public RegisterUserAccountTests(WebApplicationFactory<Program> factory)
+    public RegisterUserAccountTests(MyRecipeBookApplicationFactory factory)
     {
         _client = factory.CreateClient();
     }
@@ -25,7 +26,7 @@ public class RegisterUserAccountTests : IClassFixture<WebApplicationFactory<Prog
     {
         var request = RequestRegisterUserAccountJsonBuilder.Build();
 
-        var response = await _client.PostAsJsonAsync("/user", request);
+        var response = await _client.PostAsJsonAsync(REQUEST_URI, request);
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
 
         await using var responseBody = await response.Content.ReadAsStreamAsync();
@@ -48,7 +49,7 @@ public class RegisterUserAccountTests : IClassFixture<WebApplicationFactory<Prog
         _client.DefaultRequestHeaders.AcceptLanguage.Clear();
         _client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(culture);
 
-        var response = await _client.PostAsJsonAsync("/user", request);
+        var response = await _client.PostAsJsonAsync(REQUEST_URI, request);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
         await using var responseBody = await response.Content.ReadAsStreamAsync();
