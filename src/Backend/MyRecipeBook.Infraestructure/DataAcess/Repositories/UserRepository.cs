@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿ using Microsoft.EntityFrameworkCore;
 using MyRecipeBook.Domain.Entities;
 using MyRecipeBook.Domain.Repositories.User;
 
@@ -16,5 +16,8 @@ internal sealed class UserRepository : IUserWriteOnlyRepository, IUserReadOnlyRe
     public async Task Add(User user) => await _dbContext.Users.AddAsync(user);
 
     public async Task<bool> ExistActiveUserWithEmail(string email) => await _dbContext.Users.AnyAsync(u => u.Email == email && u.Active);
+
+    public async Task<User?> GetByEmail(string email) => await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Active && u.Email.Equals(email));
+
 }
     
