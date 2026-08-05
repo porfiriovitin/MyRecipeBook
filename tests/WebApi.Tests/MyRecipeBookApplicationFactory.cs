@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using CommomTestsUtilities.Entities;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using MyRecipeBook.Infraestructure.DataAcess;
 using Testcontainers.PostgreSql;
 
 namespace WebApi.Tests;
@@ -30,6 +33,15 @@ public class MyRecipeBookApplicationFactory : WebApplicationFactory<Program>, IA
     public async Task InitializeAsync()
     {
         await _postgreSqlContainer.StartAsync();
+
+        await using var scope = Services.CreateAsyncScope();
+
+        var dbContext = scope.ServiceProvider.GetRequiredService<MyRecipeBookDbContext>();
+
+        var user = UserBuilder.Build();
+
+        await dbContext.Users.AddAsync(user);
+        await dbContext.SaveChangesAsync();
     }
 
     Task IAsyncLifetime.DisposeAsync() => _postgreSqlContainer.StopAsync();
