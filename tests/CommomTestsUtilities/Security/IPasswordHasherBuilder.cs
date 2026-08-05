@@ -1,7 +1,7 @@
 ﻿using Moq;
 using MyRecipeBook.Domain.Security.PasswordHashing;
 
-namespace CommomTestsUtilities.IPasswordHasherBuilder;
+namespace CommomTestsUtilities.Security;
 
 public class IPasswordHasherBuilder
 {

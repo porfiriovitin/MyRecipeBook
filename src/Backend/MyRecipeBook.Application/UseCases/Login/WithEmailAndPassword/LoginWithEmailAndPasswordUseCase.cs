@@ -28,7 +28,7 @@ public class LoginWithEmailAndPasswordUseCase : ILoginWithEmailAndPasswordUseCas
             throw new InvalidLoginException();
 
         return new ResponseRegisteredUserJson(
-            Name:request.Email, 
+            Name: user.Name,
             Tokens: new ResponseTokensJson (AccessToken: "", RefreshToken: "")
             );
     }

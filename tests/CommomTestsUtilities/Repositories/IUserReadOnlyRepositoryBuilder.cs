@@ -1,21 +1,27 @@
 ﻿using Moq;
+using MyRecipeBook.Domain.Entities;
 using MyRecipeBook.Domain.Repositories.User;
 
 namespace CommomTestsUtilities.Repositories;
 
 public class IUserReadOnlyRepositoryBuilder
 {
-    private readonly Mock<IUserReadOnlyRepository> _userReadOnlyRepositoryMock;
+    private readonly Mock<IUserReadOnlyRepository> _mock;
 
     public IUserReadOnlyRepositoryBuilder()
     {
-        _userReadOnlyRepositoryMock = new Mock<IUserReadOnlyRepository>();
+        _mock = new Mock<IUserReadOnlyRepository>();
     }
 
     public void ExistActiveUserWithEmail(string email)
     {
-        _userReadOnlyRepositoryMock.Setup(repository => repository.ExistActiveUserWithEmail(email)).ReturnsAsync(true);
+        _mock.Setup(repository => repository.ExistActiveUserWithEmail(email)).ReturnsAsync(true);
     }
 
-    public IUserReadOnlyRepository Build() => _userReadOnlyRepositoryMock.Object;
+    public void GetByEmail(User user)
+    {
+        _mock.Setup(repository => repository.GetByEmail(user.Email)).ReturnsAsync(user) ;
+    }
+
+    public IUserReadOnlyRepository Build() => _mock.Object;
 }
