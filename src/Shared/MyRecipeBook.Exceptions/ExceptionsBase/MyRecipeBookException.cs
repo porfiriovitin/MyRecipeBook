@@ -1,5 +1,10 @@
-﻿namespace MyRecipeBook.Exceptions.ExceptionsBase;
+﻿using System.Net;
 
-public abstract class MyRecipeBookException(string message) : System.Exception(message)
+namespace MyRecipeBook.Exceptions.ExceptionsBase;
+
+public abstract class MyRecipeBookException(): System.Exception
 {
+    public abstract HttpStatusCode GetStatusCode();
+
+    public abstract List<string> GetErrorMessages();
 }

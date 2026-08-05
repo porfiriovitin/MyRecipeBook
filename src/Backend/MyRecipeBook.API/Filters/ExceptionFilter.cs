@@ -14,25 +14,21 @@ public class ExceptionFilter : IExceptionFilter
         var payload = new PayloadResponse<object>
         {
             Status = nameof(ResponseStatus.Error),
-            Message = context.Exception.Message,
+            Message = string.Empty,
             Data = null
         };
 
-        switch(context.Exception)
+        if (context.Exception is MyRecipeBookException myRecipeBookException)
         {
-            case ErrorOnValidationException:
-                context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Result = new BadRequestObjectResult(payload);
-                break;
-            default:
-                context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                context.Result = new ObjectResult(new PayloadResponse<object>
-                {
-                    Status = nameof(ResponseStatus.Error),
-                    Message = ResourceMessagesException.UNKNOWN_ERROR,
-                    Data = null
-                });
-                break;
+            context.HttpContext.Response.StatusCode = (int)myRecipeBookException.GetStatusCode();
+            payload.Message = string.Join( " | ", myRecipeBookException.GetErrorMessages());
+            context.Result = new ObjectResult(payload);
+        }
+        else
+        {
+            context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            payload.Message = ResourceMessagesException.UNKNOWN_ERROR;
+            context.Result = new ObjectResult(payload);
         }
 
         context.ExceptionHandled = true;
