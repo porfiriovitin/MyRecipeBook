@@ -1,5 +1,4 @@
 ﻿using CommomTestsUtilities.Requests;
-using Microsoft.EntityFrameworkCore;
 using MyRecipeBook.Communication.Enums;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Exceptions;
@@ -13,15 +12,13 @@ using WebApi.Tests.Resources;
 
 namespace WebApi.Tests.Login.WithEmailAndPassword;
 
-public class LoginWithEmailAndPasswordTests : IClassFixture<MyRecipeBookApplicationFactory>
+public class LoginWithEmailAndPasswordTests : BaseIntegrationTest
 {
     private const string REQUEST_URI = "/authentication";
-    private readonly HttpClient _httpClient;
     private readonly UserIdentityManager _firstUser;
 
-    public LoginWithEmailAndPasswordTests(MyRecipeBookApplicationFactory factory)
+    public LoginWithEmailAndPasswordTests(MyRecipeBookApplicationFactory factory) : base(factory)
     {
-        _httpClient = factory.CreateClient();
         _firstUser = factory.FirstUser ?? throw new InvalidOperationException("First user is not initialized.");
     }
 
@@ -34,7 +31,7 @@ public class LoginWithEmailAndPasswordTests : IClassFixture<MyRecipeBookApplicat
             Password = _firstUser.GetPassword()
         };
 
-        var response = await _httpClient.PostAsJsonAsync(REQUEST_URI, request);
+        var response = await Post(REQUEST_URI, request);
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         await using var responseBody = await response.Content.ReadAsStreamAsync();
@@ -55,10 +52,7 @@ public class LoginWithEmailAndPasswordTests : IClassFixture<MyRecipeBookApplicat
     {
         var request = RequestLoginJsonBuilder.Build();
 
-        _httpClient.DefaultRequestHeaders.AcceptLanguage.Clear();
-        _httpClient.DefaultRequestHeaders.AcceptLanguage.ParseAdd(culture);
-
-        var response =await _httpClient.PostAsJsonAsync(REQUEST_URI, request);
+        var response =await Post(REQUEST_URI, request, culture);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
 
         await using var responseBody = await response.Content.ReadAsStreamAsync();

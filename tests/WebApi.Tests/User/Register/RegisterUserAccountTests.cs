@@ -12,18 +12,12 @@ using WebApi.Tests.InlineData;
 
 namespace WebApi.Tests.User.Register;
 
-public class RegisterUserAccountTests : IClassFixture<MyRecipeBookApplicationFactory>
+public class RegisterUserAccountTests : BaseIntegrationTest
 {
     private const string REQUEST_URI = "/user";
-    private readonly HttpClient _client;
-    private readonly MyRecipeBookDbContext _dbContext;
 
-    public RegisterUserAccountTests(MyRecipeBookApplicationFactory factory)
+    public RegisterUserAccountTests(MyRecipeBookApplicationFactory factory) : base(factory)
     {
-        _client = factory.CreateClient();
-
-        var scope = factory.Services.CreateScope();
-        _dbContext = scope.ServiceProvider.GetRequiredService<MyRecipeBookDbContext>();
     }
 
     [Fact]
@@ -31,7 +25,7 @@ public class RegisterUserAccountTests : IClassFixture<MyRecipeBookApplicationFac
     {
         var request = RequestRegisterUserAccountJsonBuilder.Build();
 
-        var response = await _client.PostAsJsonAsync(REQUEST_URI, request);
+        var response = await Post(REQUEST_URI, request);
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
 
         await using var responseBody = await response.Content.ReadAsStreamAsync();
@@ -44,7 +38,7 @@ public class RegisterUserAccountTests : IClassFixture<MyRecipeBookApplicationFac
         bodyData.GetProperty("name").GetString().ShouldBe(request.Name);
         bodyData.GetProperty("tokens").GetProperty("accessToken").GetString().ShouldBeEmpty();
 
-        var userExists = _dbContext.Users.Any(user => user.Active && user.Name.Equals(request.Name) && user.Email.Equals(request.Email));
+        var userExists = DbContext.Users.Any(user => user.Active && user.Name.Equals(request.Name) && user.Email.Equals(request.Email));
         userExists.ShouldBeTrue();
     }
 
@@ -54,10 +48,8 @@ public class RegisterUserAccountTests : IClassFixture<MyRecipeBookApplicationFac
     {
         var request = RequestRegisterUserAccountJsonBuilder.Build() with { Name = string.Empty };
 
-        _client.DefaultRequestHeaders.AcceptLanguage.Clear();
-        _client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(culture);
 
-        var response = await _client.PostAsJsonAsync(REQUEST_URI, request);
+        var response = await Post(REQUEST_URI, request, culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
         await using var responseBody = await response.Content.ReadAsStreamAsync();
@@ -69,7 +61,7 @@ public class RegisterUserAccountTests : IClassFixture<MyRecipeBookApplicationFac
         responseData.RootElement.GetProperty("status").GetString().ShouldBe(nameof(ResponseStatus.Error));
         responseData.RootElement.GetProperty("message").GetString().ShouldBe(expectedErrorMessage);
 
-        var userExists = _dbContext.Users.Any(user => user.Active && user.Name.Equals(request.Name) && user.Email.Equals(request.Email));
+        var userExists = DbContext.Users.Any(user => user.Active && user.Name.Equals(request.Name) && user.Email.Equals(request.Email));
         userExists.ShouldBeFalse();
     }
 }
