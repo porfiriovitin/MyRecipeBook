@@ -1,6 +1,7 @@
 ﻿using CommomTestsUtilities.Requests;
 using Microsoft.EntityFrameworkCore;
 using MyRecipeBook.Communication.Enums;
+using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Exceptions;
 using Shouldly;
 using System.Globalization;
@@ -8,6 +9,7 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using WebApi.Tests.InlineData;
+using WebApi.Tests.Resources;
 
 namespace WebApi.Tests.Login.WithEmailAndPassword;
 
@@ -15,15 +17,35 @@ public class LoginWithEmailAndPasswordTests : IClassFixture<MyRecipeBookApplicat
 {
     private const string REQUEST_URI = "/authentication";
     private readonly HttpClient _httpClient;
+    private readonly UserIdentityManager _firstUser;
 
     public LoginWithEmailAndPasswordTests(MyRecipeBookApplicationFactory factory)
     {
         _httpClient = factory.CreateClient();
+        _firstUser = factory.FirstUser ?? throw new InvalidOperationException("First user is not initialized.");
     }
 
     [Fact]
     public async Task Sucess()
     {
+        var request = new RequestLoginJson
+        {
+            Email = _firstUser.GetEmail(),
+            Password = _firstUser.GetPassword()
+        };
+
+        var response = await _httpClient.PostAsJsonAsync(REQUEST_URI, request);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+        await using var responseBody = await response.Content.ReadAsStreamAsync();
+
+        var responseData = await JsonDocument.ParseAsync(responseBody);
+        responseData.RootElement.GetProperty("status").GetString().ShouldBe(nameof(ResponseStatus.Success));
+        responseData.RootElement.GetProperty("message").GetString().ShouldBe("Login sucessfully");
+
+        var bodyData = responseData.RootElement.GetProperty("data");
+        bodyData.GetProperty("name").GetString().ShouldBe(_firstUser.GetName());
+        bodyData.GetProperty("tokens").GetProperty("accessToken").GetString().ShouldBeEmpty();
 
     }
 

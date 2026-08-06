@@ -3,13 +3,17 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MyRecipeBook.Domain.Security.PasswordHashing;
 using MyRecipeBook.Infraestructure.DataAcess;
 using Testcontainers.PostgreSql;
+using WebApi.Tests.Resources;
 
 namespace WebApi.Tests;
 
 public class MyRecipeBookApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
+    public UserIdentityManager? FirstUser { get; private set; }
+
     private readonly PostgreSqlContainer _postgreSqlContainer;
 
     public MyRecipeBookApplicationFactory()
@@ -37,11 +41,16 @@ public class MyRecipeBookApplicationFactory : WebApplicationFactory<Program>, IA
         await using var scope = Services.CreateAsyncScope();
 
         var dbContext = scope.ServiceProvider.GetRequiredService<MyRecipeBookDbContext>();
+        var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
 
-        var user = UserBuilder.Build();
+        var (user, password) = UserBuilder.Build();
+
+        user.Password = passwordHasher.HashPassword(password);
 
         await dbContext.Users.AddAsync(user);
         await dbContext.SaveChangesAsync();
+
+        FirstUser = new UserIdentityManager(user, password);
     }
 
     Task IAsyncLifetime.DisposeAsync() => _postgreSqlContainer.StopAsync();
