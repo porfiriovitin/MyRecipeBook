@@ -17,16 +17,27 @@ namespace MyRecipeBook.Infraestructure
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IPasswordHasher, Argon2PasswordHasher>();
-            services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
-            services.AddScoped<IUserReadOnlyRepository, UserRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            AddRepositories(services);
+            AddTokensHanlders(services, configuration);
 
             services.AddDbContext<MyRecipeBookDbContext>(options =>
             {
                 var connectionString = configuration.GetConnectionString("DbConnection");
                 options.UseNpgsql(connectionString);
             });
+            
+        }
 
+        private static void AddRepositories(this IServiceCollection services)
+        {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
+            services.AddScoped<IUserReadOnlyRepository, UserRepository>();
+        }
+
+        private static void AddTokensHanlders(this IServiceCollection services, IConfiguration configuration) 
+        {
             var expirationTimeInMinutes = configuration.GetValue<uint>("Jwt:ExpirationTimeInMinutes");
             var SigningKey = configuration.GetValue<string>("Jwt:SigningKey")!;
 
