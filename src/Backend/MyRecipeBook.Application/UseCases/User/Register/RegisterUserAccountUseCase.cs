@@ -6,6 +6,7 @@ using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Domain.Security.PasswordHashing;
+using MyRecipeBook.Domain.Security.Tokens;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
 
@@ -17,13 +18,15 @@ public class RegisterUserAccountUseCase : IRegisterUserAccountUseCase
     private readonly IUserWriteOnlyRepository _userWriteOnlyRepository;
     private readonly IUserReadOnlyRepository _userReadOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAcessTokenGenerator _acessTokenGenerator;
 
-    public RegisterUserAccountUseCase(IPasswordHasher passwordHasher, IUserWriteOnlyRepository userWriteOnlyRepository, IUserReadOnlyRepository userReadOnlyRepository, IUnitOfWork unitOfWork)
+    public RegisterUserAccountUseCase(IPasswordHasher passwordHasher, IUserWriteOnlyRepository userWriteOnlyRepository, IUserReadOnlyRepository userReadOnlyRepository, IUnitOfWork unitOfWork, IAcessTokenGenerator acessTokenGenerator)
     {
         _passwordHasher = passwordHasher;
         _userWriteOnlyRepository = userWriteOnlyRepository;
         _userReadOnlyRepository = userReadOnlyRepository;
         _unitOfWork = unitOfWork;
+        _acessTokenGenerator = acessTokenGenerator;
     }
 
     public async Task<ResponseRegisteredUserJson> Execute(RequestRegisterUserAccountJson request)
@@ -43,9 +46,11 @@ public class RegisterUserAccountUseCase : IRegisterUserAccountUseCase
         /// :: Commit the transaction.
         await _unitOfWork.Commit();
 
+        string acessToken = _acessTokenGenerator.Generate(user);
+
         return new ResponseRegisteredUserJson(
             Name: request.Name,
-            Tokens: new ResponseTokensJson(AccessToken: "", RefreshToken: "")
+            Tokens: new ResponseTokensJson(AccessToken: acessToken, RefreshToken: "")
         );
       
     }

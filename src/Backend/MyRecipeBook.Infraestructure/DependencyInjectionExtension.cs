@@ -4,9 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Domain.Security.PasswordHashing;
+using MyRecipeBook.Domain.Security.Tokens;
 using MyRecipeBook.Infraestructure.DataAcess;
 using MyRecipeBook.Infraestructure.DataAcess.Repositories;
 using MyRecipeBook.Infraestructure.Security.PasswordHashing;
+using MyRecipeBook.Infraestructure.Security.Tokens.Acess;
 
 namespace MyRecipeBook.Infraestructure
 {
@@ -23,6 +25,14 @@ namespace MyRecipeBook.Infraestructure
             {
                 var connectionString = configuration.GetConnectionString("DbConnection");
                 options.UseNpgsql(connectionString);
+            });
+
+            var expirationTimeInMinutes = configuration.GetValue<uint>("Jwt:ExpirationTimeInMinutes");
+            var SigningKey = configuration.GetValue<string>("Jwt:SigningKey")!;
+
+            services.AddScoped<IAcessTokenGenerator>(provider =>
+            {
+                return new JwtTokenHandler(expirationTimeInMinutes, SigningKey);
             });
         }
     }
