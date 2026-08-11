@@ -36,7 +36,7 @@ public class RegisterUserAccountTests : BaseIntegrationTest
 
         var bodyData = responseData.RootElement.GetProperty("data");
         bodyData.GetProperty("name").GetString().ShouldBe(request.Name);
-        bodyData.GetProperty("tokens").GetProperty("accessToken").GetString().ShouldBeEmpty();
+        bodyData.GetProperty("tokens").GetProperty("accessToken").GetString().ShouldNotBeEmpty();
 
         var userExists = DbContext.Users.Any(user => user.Active && user.Name.Equals(request.Name) && user.Email.Equals(request.Email));
         userExists.ShouldBeTrue();

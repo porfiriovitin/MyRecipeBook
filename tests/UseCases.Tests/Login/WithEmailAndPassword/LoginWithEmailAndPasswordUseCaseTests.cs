@@ -2,6 +2,7 @@
 using CommomTestsUtilities.Repositories;
 using CommomTestsUtilities.Requests;
 using CommomTestsUtilities.Security;
+using Mapster;
 using MyRecipeBook.Application.UseCases.Login.WithEmailAndPassword;
 using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Exceptions;
@@ -70,14 +71,15 @@ public class LoginWithEmailAndPasswordUseCaseTests
     {
         var passwordHasherBuilder = new IPasswordHasherBuilder();
         var userReadOnlyRepositoryBuilder = new IUserReadOnlyRepositoryBuilder();
+        var acessTokenGeneratorBuilder = IAcessTokenGeneratorBuilder.Build();
 
-        if(user is not null)
+        if (user is not null)
             userReadOnlyRepositoryBuilder.GetByEmail(user);
 
         if(password.IsNotEmpty())
             passwordHasherBuilder.VerifyPassword(password);
 
-        return new LoginWithEmailAndPasswordUseCase( passwordHasherBuilder.Build(), userReadOnlyRepositoryBuilder.Build() );
+        return new LoginWithEmailAndPasswordUseCase( passwordHasherBuilder.Build(), userReadOnlyRepositoryBuilder.Build(), acessTokenGeneratorBuilder);
     }
 
 }
