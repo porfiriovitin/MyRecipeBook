@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyRecipeBook.Application.UseCases.User.Register;
 using MyRecipeBook.Communication.Enums;
 using MyRecipeBook.Communication.Requests;
@@ -24,4 +25,12 @@ public class UserController : ControllerBase
                 Data = result
             });
     }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> GetUserProfile()
+    {
+        return Ok();
+    }
+
 }
