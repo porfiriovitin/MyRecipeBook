@@ -123,6 +123,12 @@
   <data name="USER_REGISTERED_SUCESSFULLY" xml:space="preserve">
     <value>User successfully registered!</value>
   </data>
+  <data name="VALIDATION_ACESS_TOKEN_EXPIRED" xml:space="preserve">
+    <value>Oops! Acess token expired.</value>
+  </data>
+  <data name="VALIDATION_ACESS_TOKEN_REQUIRED" xml:space="preserve">
+    <value>Oops! This request needs an acess token.</value>
+  </data>
   <data name="VALIDATION_EMAIL_ALREADY_EXISTS" xml:space="preserve">
     <value>Oops! This email is already in use.</value>
   </data>
@@ -143,5 +149,8 @@
   </data>
   <data name="VALIDATION_PASSWORD_REQUIRED" xml:space="preserve">
     <value>Oops! Password is required</value>
+  </data>
+  <data name="VALIDATION_RESOURCE_ACESS_INVALID" xml:space="preserve">
+    <value>Oops! You don't have acess to this resource</value>
   </data>
 </root>

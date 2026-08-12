@@ -79,6 +79,24 @@ namespace MyRecipeBook.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! Acess token expired..
+        /// </summary>
+        public static string VALIDATION_ACESS_TOKEN_EXPIRED {
+            get {
+                return ResourceManager.GetString("VALIDATION_ACESS_TOKEN_EXPIRED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! This request needs an acess token..
+        /// </summary>
+        public static string VALIDATION_ACESS_TOKEN_REQUIRED {
+            get {
+                return ResourceManager.GetString("VALIDATION_ACESS_TOKEN_REQUIRED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! This email is already in use..
         /// </summary>
         public static string VALIDATION_EMAIL_ALREADY_EXISTS {
@@ -138,6 +156,15 @@ namespace MyRecipeBook.Exceptions {
         public static string VALIDATION_PASSWORD_REQUIRED {
             get {
                 return ResourceManager.GetString("VALIDATION_PASSWORD_REQUIRED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! You don&apos;t have acess to this resource.
+        /// </summary>
+        public static string VALIDATION_RESOURCE_ACESS_INVALID {
+            get {
+                return ResourceManager.GetString("VALIDATION_RESOURCE_ACESS_INVALID", resourceCulture);
             }
         }
     }

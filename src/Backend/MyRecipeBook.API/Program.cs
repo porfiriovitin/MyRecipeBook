@@ -5,8 +5,11 @@ using Microsoft.IdentityModel.Tokens;
 using MyRecipeBook.API.Converters;
 using MyRecipeBook.API.Filters;
 using MyRecipeBook.Application;
+using MyRecipeBook.Communication.Enums;
+using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories.User;
+using MyRecipeBook.Exceptions;
 using MyRecipeBook.Infraestructure;
 using MyRecipeBook.Infraestructure.Migrations;
 using System.Globalization;
@@ -65,23 +68,44 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     {
         OnTokenValidated = async context =>
         {
-            var userId = context.Principal?.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? context.Principal?.FindFirstValue(ClaimTypes.NameIdentifier);
+            var subject = context.Principal?.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? context.Principal?.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if(userId.IsEmpty())
+            if(Guid.TryParse(subject, out var userId) == false)
             {
                 context.Fail("Invalid subject");
-                context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return;
             }
 
             var userRepository = context.HttpContext.RequestServices.GetRequiredService<IUserReadOnlyRepository>();
-            var existingUser = await userRepository.ExistActiveUserWithId(Guid.Parse(userId));
 
-            if (!existingUser)
+            var userExists = await userRepository.ExistActiveUserWithId(userId);
+            if (!userExists)
+                context.Fail("User not found or inactive");
+        },
+
+        OnChallenge = async context =>
+        {
+            context.HandleResponse();
+
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            context.Response.ContentType = "application/json";
+
+            var response = new PayloadResponse<object>
             {
-                context.Fail("Invalid user");
-                context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            }
+                Status = nameof(ResponseStatus.Error),
+                Message = string.Empty,
+                Data = null
+            };
+
+            var errorMessage = context.AuthenticateFailure switch
+            {
+                null => response.Message = ResourceMessagesException.VALIDATION_ACESS_TOKEN_REQUIRED ,
+                SecurityTokenExpiredException => response.Message = ResourceMessagesException.VALIDATION_ACESS_TOKEN_EXPIRED,
+                _ => response.Message = ResourceMessagesException.VALIDATION_RESOURCE_ACESS_INVALID
+            };
+
+            await context.Response.WriteAsJsonAsync(response);
+        
         }
     };
 

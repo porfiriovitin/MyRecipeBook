@@ -123,6 +123,13 @@
   <data name="USER_REGISTERED_SUCESSFULLY" xml:space="preserve">
     <value>¡Usuario registrado exitosamente!</value>
   </data>
+  <data name="VALIDATION_ACESS_TOKEN_EXPIRED" xml:space="preserve">
+    <value>¡Ups! 
+token de acceso caducado</value>
+  </data>
+  <data name="VALIDATION_ACESS_TOKEN_REQUIRED" xml:space="preserve">
+    <value>¡Ups! Esta solicitud necesita un access token.</value>
+  </data>
   <data name="VALIDATION_EMAIL_ALREADY_EXISTS" xml:space="preserve">
     <value>¡Ups! Este correo electrónico ya está en uso.</value>
   </data>
@@ -143,5 +150,8 @@
   </data>
   <data name="VALIDATION_PASSWORD_REQUIRED" xml:space="preserve">
     <value>¡Ups! Se requiere una contraseña.</value>
+  </data>
+  <data name="VALIDATION_RESOURCE_ACESS_INVALID" xml:space="preserve">
+    <value>¡Ups! No tienes acceso a este recurso</value>
   </data>
 </root>
