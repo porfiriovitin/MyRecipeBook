@@ -5,9 +5,13 @@ using Microsoft.IdentityModel.Tokens;
 using MyRecipeBook.API.Converters;
 using MyRecipeBook.API.Filters;
 using MyRecipeBook.Application;
+using MyRecipeBook.Domain.Extensions;
+using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Infraestructure;
 using MyRecipeBook.Infraestructure.Migrations;
 using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -55,6 +59,30 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateLifetime = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey)),
         ClockSkew = TimeSpan.Zero
+    };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnTokenValidated = async context =>
+        {
+            var userId = context.Principal?.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? context.Principal?.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if(userId.IsEmpty())
+            {
+                context.Fail("Invalid subject");
+                context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return;
+            }
+
+            var userRepository = context.HttpContext.RequestServices.GetRequiredService<IUserReadOnlyRepository>();
+            var existingUser = await userRepository.ExistActiveUserWithId(Guid.Parse(userId));
+
+            if (!existingUser)
+            {
+                context.Fail("Invalid user");
+                context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            }
+        }
     };
 
 });
