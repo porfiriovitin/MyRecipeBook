@@ -79,7 +79,7 @@ namespace MyRecipeBook.Exceptions {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! Acess token expired..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! Access token expired!.
         /// </summary>
         public static string VALIDATION_ACESS_TOKEN_EXPIRED {
             get {
@@ -162,9 +162,9 @@ namespace MyRecipeBook.Exceptions {
         /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! You don&apos;t have acess to this resource.
         /// </summary>
-        public static string VALIDATION_RESOURCE_ACESS_INVALID {
+        public static string VALIDATION_RESOURCE_ACESS_DENIED {
             get {
-                return ResourceManager.GetString("VALIDATION_RESOURCE_ACESS_INVALID", resourceCulture);
+                return ResourceManager.GetString("VALIDATION_RESOURCE_ACESS_DENIED", resourceCulture);
             }
         }
     }

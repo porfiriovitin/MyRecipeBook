@@ -123,9 +123,6 @@
   <data name="USER_REGISTERED_SUCESSFULLY" xml:space="preserve">
     <value>Usuário cadastrado com sucesso!</value>
   </data>
-  <data name="VALIDATION_ACESS_TOKEN_EXPIRED" xml:space="preserve">
-    <value>Oops! Token de acesso expirado!</value>
-  </data>
   <data name="VALIDATION_ACESS_TOKEN_REQUIRED" xml:space="preserve">
     <value>Oops! Esta requisição precisa de um acess token.</value>
   </data>
@@ -150,7 +147,10 @@
   <data name="VALIDATION_PASSWORD_REQUIRED" xml:space="preserve">
     <value>Oops! A senha é obrigatória</value>
   </data>
-  <data name="VALIDATION_RESOURCE_ACESS_INVALID" xml:space="preserve">
+  <data name="VALIDATION_RESOURCE_ACESS_DENIED" xml:space="preserve">
     <value>Oops! Você não tem acesso a este recurso.</value>
+  </data>
+  <data name="VALIDATION_ACESS_TOKEN_EXPIRED" xml:space="preserve">
+    <value>Oops! Token de acesso expirado!</value>
   </data>
 </root>
