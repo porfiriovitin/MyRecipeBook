@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using MyRecipeBook.API.Converters;
 using MyRecipeBook.API.Filters;
 using MyRecipeBook.Application;
 using MyRecipeBook.Communication.Enums;
 using MyRecipeBook.Communication.Responses;
-using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Infraestructure;
@@ -27,7 +27,23 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Description = "Enter only your acess token. Swagger will add 'Bearer' automatically",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        { new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } }, Array.Empty<string>() }
+    });
+});
 
 /// :: Dependecy injections.
 builder.Services.AddApplication();
@@ -101,7 +117,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
             {
                 null => response.Message = ResourceMessagesException.VALIDATION_ACESS_TOKEN_REQUIRED ,
                 SecurityTokenExpiredException => response.Message = ResourceMessagesException.VALIDATION_ACESS_TOKEN_EXPIRED,
-                _ => response.Message = ResourceMessagesException.VALIDATION_RESOURCE_ACESS_INVALID
+                _ => response.Message = ResourceMessagesException.VALIDATION_RESOURCE_ACESS_DENIED
             };
 
             await context.Response.WriteAsJsonAsync(response);
