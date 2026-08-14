@@ -30,7 +30,8 @@ public class RegisterUserAccountValidatorTests
     public void Validate_ShouldHaveError_WhenNameIsEmpty(string name)
     {
         /// :: Arrange.
-        var request = RequestRegisterUserAccountJsonBuilder.Build() with { Name = name };
+        var request = RequestRegisterUserAccountJsonBuilder.Build();
+        request.Name = name;
         var validator = new RegisterUserAccountValidator();
 
         /// :: Act.
@@ -49,7 +50,8 @@ public class RegisterUserAccountValidatorTests
     public void Validate_ShouldHaveError_WhenEmailIsEmpty(string email)
     {
         /// :: Arrange.
-        var request = RequestRegisterUserAccountJsonBuilder.Build() with { Email = email };
+        var request = RequestRegisterUserAccountJsonBuilder.Build();
+        request.Email = email;
         var validator = new RegisterUserAccountValidator();
 
         /// :: Act.
@@ -64,7 +66,8 @@ public class RegisterUserAccountValidatorTests
     public void Validate_ShouldHaveError_WhenEmailIsInvalid()
     {
         /// :: Arrange.
-        var request = RequestRegisterUserAccountJsonBuilder.Build() with { Email = "invalid-email" };
+        var request = RequestRegisterUserAccountJsonBuilder.Build();
+        request.Email = "invalid-email";
         var validator = new RegisterUserAccountValidator();
 
         /// :: Act.
@@ -79,7 +82,8 @@ public class RegisterUserAccountValidatorTests
     public void Validate_ShouldHaveError_WhenPasswordIsEmpty()
     {
         /// :: Arrange.
-        var request = RequestRegisterUserAccountJsonBuilder.Build() with { Password = string.Empty };
+        var request = RequestRegisterUserAccountJsonBuilder.Build();
+        request.Password = string.Empty;
         var validator = new RegisterUserAccountValidator();
 
         /// :: Act.
@@ -94,7 +98,8 @@ public class RegisterUserAccountValidatorTests
     public void Validate_ShouldHaveError_WhenPasswordIsShorterThanSixCharacters()
     {
         /// :: Arrange.
-        var request = RequestRegisterUserAccountJsonBuilder.Build() with { Password = "12345" };
+        var request = RequestRegisterUserAccountJsonBuilder.Build();
+        request.Password = "12345";
         var validator = new RegisterUserAccountValidator();
 
         /// :: Act.

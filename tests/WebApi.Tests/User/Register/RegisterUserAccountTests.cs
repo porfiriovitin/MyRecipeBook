@@ -46,7 +46,8 @@ public class RegisterUserAccountTests : BaseIntegrationTest
     [ClassData(typeof(CultureInlineData))]
     public async Task Validate_ShouldBeAnErrorResponse_WhenNameIsEmpty(string culture)
     {
-        var request = RequestRegisterUserAccountJsonBuilder.Build() with { Name = string.Empty };
+        var request = RequestRegisterUserAccountJsonBuilder.Build();
+        request.Name = string.Empty;
 
 
         var response = await Post(REQUEST_URI, request, culture);

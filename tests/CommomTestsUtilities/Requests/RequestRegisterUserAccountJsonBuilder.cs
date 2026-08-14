@@ -9,10 +9,11 @@ public class RequestRegisterUserAccountJsonBuilder
     {
         var faker = new Faker();
 
-        return new RequestRegisterUserAccountJson(
-            Name: faker.Person.FirstName,
-            Email: faker.Internet.Email(),
-            Password: faker.Internet.Password(10, prefix: "Aa1!")
-        );
+        return new RequestRegisterUserAccountJson
+        {
+            Name = faker.Person.FirstName,
+            Email = faker.Internet.Email(),
+            Password = faker.Internet.Password(10, prefix: "Aa1!")
+        };
     }
 }

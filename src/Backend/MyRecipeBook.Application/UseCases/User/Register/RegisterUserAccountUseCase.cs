@@ -48,10 +48,11 @@ public class RegisterUserAccountUseCase : IRegisterUserAccountUseCase
 
         string acessToken = _acessTokenGenerator.Generate(user);
 
-        return new ResponseRegisteredUserJson(
-            Name: request.Name,
-            Tokens: new ResponseTokensJson(AccessToken: acessToken, RefreshToken: "")
-        );
+        return new ResponseRegisteredUserJson
+        {
+            Name = request.Name,
+            Tokens = new ResponseTokensJson { AccessToken = acessToken, RefreshToken = "" }
+        };
       
     }
 

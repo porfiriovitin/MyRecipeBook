@@ -32,9 +32,10 @@ public class LoginWithEmailAndPasswordUseCase : ILoginWithEmailAndPasswordUseCas
 
         string acessToken = _acessTokenGenerator.Generate(user);
 
-        return new ResponseRegisteredUserJson(
-            Name: user.Name,
-            Tokens: new ResponseTokensJson (AccessToken: acessToken, RefreshToken: "")
-            );
+        return new ResponseRegisteredUserJson
+        {
+            Name = user.Name,
+            Tokens = new ResponseTokensJson { AccessToken = acessToken, RefreshToken = "" }
+        };
     }
 }

@@ -28,9 +28,15 @@ public class UserController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> GetUserProfile()
+    public async Task<IActionResult> GetUserProfile([FromServices] IGetUserProfileUseCase useCase)
     {
-        return Ok();
-    }
+        var result = await useCase.Execute();
 
+        return StatusCode(StatusCodes.Status201Created, new PayloadResponse<ResponseRegisteredUserJson>
+        {
+            Status = nameof(ResponseStatus.Success),
+            Message = "User account registered successfully.",
+            Data = result
+        });
+    }
 }

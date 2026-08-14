@@ -35,7 +35,8 @@ public class RegisterUserAccountUseCaseTests
     [Fact]
     public async Task Validate_ShouldThrowException_WhenNameIsEmpty()
     {
-        var request = RequestRegisterUserAccountJsonBuilder.Build() with { Name = string.Empty };
+        var request = RequestRegisterUserAccountJsonBuilder.Build();
+        request.Name = string.Empty;
         var useCase = CreateUseCase();
 
         var exception =  await useCase.Execute(request).ShouldThrowAsync<ErrorOnValidationException>();
