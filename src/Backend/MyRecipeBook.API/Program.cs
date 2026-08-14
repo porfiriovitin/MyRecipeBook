@@ -4,11 +4,13 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MyRecipeBook.API.Converters;
 using MyRecipeBook.API.Filters;
+using MyRecipeBook.API.Token;
 using MyRecipeBook.Application;
 using MyRecipeBook.Communication.Enums;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories.User;
+using MyRecipeBook.Domain.Security.Tokens;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Infraestructure;
 using MyRecipeBook.Infraestructure.Migrations;
@@ -29,9 +31,12 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-/// :: Dependecy injections.
+/// :: Dependency injections.
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddScoped<IAcessTokenProvider, HttpContextTokenProvider>();
+
+builder.Services.AddHttpContextAccessor();
 
 /// :: Configure localization options for bilingual responses.
 builder.Services.Configure<RequestLocalizationOptions>(options =>
@@ -101,7 +106,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
             {
                 null => response.Message = ResourceMessagesException.VALIDATION_ACESS_TOKEN_REQUIRED ,
                 SecurityTokenExpiredException => response.Message = ResourceMessagesException.VALIDATION_ACESS_TOKEN_EXPIRED,
-                _ => response.Message = ResourceMessagesException.VALIDATION_RESOURCE_ACESS_INVALID
+                _ => response.Message = ResourceMessagesException.VALIDATION_RESOURCE_ACESS_DENIED
             };
 
             await context.Response.WriteAsJsonAsync(response);
