@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyRecipeBook.Application.UseCases.User.Profile;
 using MyRecipeBook.Application.UseCases.User.Register;
 using MyRecipeBook.Communication.Enums;
 using MyRecipeBook.Communication.Requests;
@@ -28,11 +29,12 @@ public class UserController : ControllerBase
 
     [HttpGet]
     [Authorize]
+    [ProducesResponseType(typeof(PayloadResponse<ResponseUserProfileJson>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUserProfile([FromServices] IGetUserProfileUseCase useCase)
     {
         var result = await useCase.Execute();
 
-        return StatusCode(StatusCodes.Status201Created, new PayloadResponse<ResponseRegisteredUserJson>
+        return StatusCode(StatusCodes.Status201Created, new PayloadResponse<ResponseUserProfileJson>
         {
             Status = nameof(ResponseStatus.Success),
             Message = "User account registered successfully.",
