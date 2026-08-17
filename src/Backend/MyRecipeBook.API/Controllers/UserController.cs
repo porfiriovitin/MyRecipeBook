@@ -34,7 +34,7 @@ public class UserController : ControllerBase
     {
         var result = await useCase.Execute();
 
-        return StatusCode(StatusCodes.Status201Created, new PayloadResponse<ResponseUserProfileJson>
+        return StatusCode(StatusCodes.Status200OK, new PayloadResponse<ResponseUserProfileJson>
         {
             Status = nameof(ResponseStatus.Success),
             Message = "User account registered successfully.",

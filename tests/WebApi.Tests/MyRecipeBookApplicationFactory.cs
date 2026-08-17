@@ -1,18 +1,19 @@
-﻿using CommomTestsUtilities.Entities;
+﻿using WebApi.Tests.Resources;
+using Testcontainers.PostgreSql;
 using Microsoft.AspNetCore.Hosting;
+using CommomTestsUtilities.Entities;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
+using MyRecipeBook.Domain.Security.Tokens;
+using MyRecipeBook.Infraestructure.DataAcess;
 using Microsoft.Extensions.DependencyInjection;
 using MyRecipeBook.Domain.Security.PasswordHashing;
-using MyRecipeBook.Infraestructure.DataAcess;
-using Testcontainers.PostgreSql;
-using WebApi.Tests.Resources;
 
 namespace WebApi.Tests;
 
 public class MyRecipeBookApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    public UserIdentityManager? FirstUser { get; private set; }
+    public UserIdentityManager FirstUser { get; private set; } = default!;
 
     private readonly PostgreSqlContainer _postgreSqlContainer;
 
@@ -42,6 +43,7 @@ public class MyRecipeBookApplicationFactory : WebApplicationFactory<Program>, IA
 
         var dbContext = scope.ServiceProvider.GetRequiredService<MyRecipeBookDbContext>();
         var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
+        var acessTokenGenerator = scope.ServiceProvider.GetRequiredService<IAcessTokenGenerator>();
 
         var (user, password) = UserBuilder.Build();
 
@@ -50,7 +52,9 @@ public class MyRecipeBookApplicationFactory : WebApplicationFactory<Program>, IA
         await dbContext.Users.AddAsync(user);
         await dbContext.SaveChangesAsync();
 
-        FirstUser = new UserIdentityManager(user, password);
+        var firstUserAcessToken = acessTokenGenerator.Generate(user);
+
+        FirstUser = new UserIdentityManager(user, password, firstUserAcessToken);
     }
 
     Task IAsyncLifetime.DisposeAsync() => _postgreSqlContainer.StopAsync();

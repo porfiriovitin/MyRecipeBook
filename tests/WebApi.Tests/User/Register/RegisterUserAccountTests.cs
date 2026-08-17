@@ -50,7 +50,7 @@ public class RegisterUserAccountTests : BaseIntegrationTest
         request.Name = string.Empty;
 
 
-        var response = await Post(REQUEST_URI, request, culture);
+        var response = await Post(REQUEST_URI, request, culture: culture);
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
         await using var responseBody = await response.Content.ReadAsStreamAsync();
