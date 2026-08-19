@@ -153,4 +153,7 @@
   <data name="VALIDATION_ACESS_TOKEN_EXPIRED" xml:space="preserve">
     <value>Oops! Token de acesso expirado!</value>
   </data>
+  <data name="VALIDATION_CURRENT_PASSWORD" xml:space="preserve">
+    <value>A senha atual informada está incorreta</value>
+  </data>
 </root>

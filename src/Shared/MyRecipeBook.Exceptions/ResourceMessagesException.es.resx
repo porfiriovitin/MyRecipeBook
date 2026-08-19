@@ -154,4 +154,7 @@
     <value>¡Ups! 
 token de acceso caducado</value>
   </data>
+  <data name="VALIDATION_CURRENT_PASSWORD" xml:space="preserve">
+    <value>La contraseña actual informada es incorrecta</value>
+  </data>
 </root>
