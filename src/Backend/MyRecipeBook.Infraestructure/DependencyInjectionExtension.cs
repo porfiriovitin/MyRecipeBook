@@ -18,19 +18,19 @@ namespace MyRecipeBook.Infraestructure
     {
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IPasswordHasher, Argon2PasswordHasher>();
-
             AddRepositories(services);
             AddTokensHandlers(services, configuration);
+            AddDbContext(services, configuration);
+            AddSecurityHandlers(services);
+        }
 
+        private static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
+        {
             services.AddDbContext<MyRecipeBookDbContext>(options =>
             {
                 var connectionString = configuration.GetConnectionString("DbConnection");
                 options.UseNpgsql(connectionString);
             });
-
-            services.AddScoped<ILoggedUser, LoggedUser>();
-            
         }
 
         private static void AddRepositories(this IServiceCollection services)
@@ -38,6 +38,13 @@ namespace MyRecipeBook.Infraestructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
             services.AddScoped<IUserReadOnlyRepository, UserRepository>();
+            services.AddScoped<IUserUpdateOnlyRepository, UserRepository>();
+        }
+
+        private static void AddSecurityHandlers(this IServiceCollection services)
+        {
+            services.AddScoped<IPasswordHasher, Argon2PasswordHasher>();
+            services.AddScoped<ILoggedUser, LoggedUser>();
         }
 
         private static void AddTokensHandlers(this IServiceCollection services, IConfiguration configuration) 

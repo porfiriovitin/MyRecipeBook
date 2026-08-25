@@ -19,6 +19,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
+bool ExecuteMigrationsOnStartup = true;
+
 var builder = WebApplication.CreateBuilder(args);
 
 /// :: Add services to the container.
@@ -153,7 +155,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-await ExecuteMigrations();
+if (ExecuteMigrationsOnStartup)
+{
+    await ExecuteMigrations();
+}
 
 app.Run();
 
