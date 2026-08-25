@@ -4,5 +4,5 @@ namespace MyRecipeBook.Application.UseCases.User.ChangePassword;
 
 public interface IChangePasswordUseCase
 {
-    Task Execute(RequestPasswordJson request);
+    Task Execute(RequestChangePasswordJson request);
 }

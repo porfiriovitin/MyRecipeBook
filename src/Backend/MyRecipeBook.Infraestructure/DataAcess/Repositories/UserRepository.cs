@@ -31,7 +31,5 @@ internal sealed class UserRepository : IUserWriteOnlyRepository, IUserReadOnlyRe
         _dbContext.Users.Attach(user);
         _dbContext.Entry(user).Property(user => user.Name).IsModified = true;
         _dbContext.Entry(user).Property(user => user.Email).IsModified = true;
-
-        _unitOfWork.Commit();
     }
 }

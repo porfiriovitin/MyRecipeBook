@@ -113,22 +113,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             context.Response.ContentType = "application/json";
 
-            var response = new PayloadResponse<object>
-            {
-                Status = nameof(ResponseStatus.Error),
-                Message = string.Empty,
-                Data = null
-            };
-
             var errorMessage = context.AuthenticateFailure switch
             {
-                null => response.Message = ResourceMessagesException.VALIDATION_ACESS_TOKEN_REQUIRED ,
-                SecurityTokenExpiredException => response.Message = ResourceMessagesException.VALIDATION_ACESS_TOKEN_EXPIRED,
-                _ => response.Message = ResourceMessagesException.VALIDATION_RESOURCE_ACESS_DENIED
+                null => ResourceMessagesException.VALIDATION_ACESS_TOKEN_REQUIRED,
+                SecurityTokenExpiredException => ResourceMessagesException.VALIDATION_ACESS_TOKEN_EXPIRED,
+                _ => ResourceMessagesException.VALIDATION_RESOURCE_ACESS_DENIED
+            };
+
+            var response = new PayloadResponse
+            {
+                Status = nameof(ResponseStatus.Error),
+                Message = errorMessage,
             };
 
             await context.Response.WriteAsJsonAsync(response);
-        
         }
     };
 

@@ -11,25 +11,31 @@ public class ExceptionFilter : IExceptionFilter
 {
     public void OnException(ExceptionContext context)
     {
-        var payload = new PayloadResponse<object>
-        {
-            Status = nameof(ResponseStatus.Error),
-            Message = string.Empty,
-            Data = null
-        };
+        int statusCode;
+        string message;
 
         if (context.Exception is MyRecipeBookException myRecipeBookException)
         {
-            context.HttpContext.Response.StatusCode = (int)myRecipeBookException.GetStatusCode();
-            payload.Message = string.Join( " | ", myRecipeBookException.GetErrorMessages());
-            context.Result = new ObjectResult(payload);
+            statusCode = (int)myRecipeBookException.GetStatusCode();
+            message = string.Join(" | ", myRecipeBookException.GetErrorMessages());
         }
         else
         {
-            context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            payload.Message = ResourceMessagesException.UNKNOWN_ERROR;
-            context.Result = new ObjectResult(payload);
+            statusCode = StatusCodes.Status500InternalServerError;
+            message = ResourceMessagesException.UNKNOWN_ERROR;
         }
+
+        var payload = new PayloadResponse<object>
+        {
+            Status = nameof(ResponseStatus.Error),
+            Message = message,
+            Data = null
+        };
+
+        context.Result = new ObjectResult(payload)
+        {
+            StatusCode = statusCode
+        };
 
         context.ExceptionHandled = true;
     }

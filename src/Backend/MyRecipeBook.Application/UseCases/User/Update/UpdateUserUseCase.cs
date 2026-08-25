@@ -1,5 +1,6 @@
 ﻿using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Domain.Identity;
+using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
@@ -10,11 +11,15 @@ public class UpdateUserUseCase : IUpdateUserUseCase
 {
     private readonly ILoggedUser _loggedUser;
     private readonly IUserReadOnlyRepository _userReadOnlyRepository;
+    private readonly IUserUpdateOnlyRepository _userUpdateOnlyRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateUserUseCase(ILoggedUser loggedUser, IUserReadOnlyRepository userReadOnlyRepository)
+    public UpdateUserUseCase(ILoggedUser loggedUser, IUserReadOnlyRepository userReadOnlyRepository, IUserUpdateOnlyRepository userUpdateOnlyRepository, IUnitOfWork unitOfWork)
     {
         _loggedUser = loggedUser;
         _userReadOnlyRepository = userReadOnlyRepository;
+        _userUpdateOnlyRepository = userUpdateOnlyRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Execute(RequestUpdateUserJson request)
@@ -22,6 +27,13 @@ public class UpdateUserUseCase : IUpdateUserUseCase
         var loggedUser = await _loggedUser.Get();
 
         await Validate(request, loggedUser);
+
+        loggedUser.Name = request.Name;
+        loggedUser.Email = request.Email;
+
+        _userUpdateOnlyRepository.UpdateProfile(loggedUser);
+
+        await _unitOfWork.Commit();
     }
 
     private async Task Validate(RequestUpdateUserJson request, Domain.Entities.User loggedUser)
