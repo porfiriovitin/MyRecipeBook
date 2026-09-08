@@ -5,15 +5,11 @@ namespace CommomTestsUtilities.Requests;
 
 public class RequestRegisterUserAccountJsonBuilder
 {
-    public static RequestRegisterUserAccountJson Build()
+    public static RequestRegisterUserAccountJson Build(int passwordLength = 10)
     {
-        var faker = new Faker();
-
-        return new RequestRegisterUserAccountJson
-        {
-            Name = faker.Person.FirstName,
-            Email = faker.Internet.Email(),
-            Password = faker.Internet.Password(10, prefix: "Aa1!")
-        };
+        return new Faker<RequestRegisterUserAccountJson>()
+            .RuleFor(x => x.Name, f => f.Person.FullName)
+            .RuleFor(x => x.Email, f => f.Internet.Email())
+            .RuleFor(x => x.Password, f => f.Internet.Password(length: passwordLength));
     }
 }

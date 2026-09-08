@@ -94,11 +94,16 @@ public class RegisterUserAccountValidatorTests
         result.Errors.ShouldContain(error => error.ErrorMessage == ResourceMessagesException.VALIDATION_PASSWORD_REQUIRED);
     }
 
-    [Fact]
-    public void Validate_ShouldHaveError_WhenPasswordIsShorterThanSixCharacters()
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(4)]
+    [InlineData(5)]
+    public void Validate_ShouldHaveError_WhenPasswordIsShorterThanSixCharacters(int passwordLength)
     {
         /// :: Arrange.
-        var request = RequestRegisterUserAccountJsonBuilder.Build();
+        var request = RequestRegisterUserAccountJsonBuilder.Build(passwordLength);
         request.Password = "12345";
         var validator = new RegisterUserAccountValidator();
 
