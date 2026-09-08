@@ -9,7 +9,7 @@ public class RequestChangePasswordJsonBuilder
     {
         return new Faker<RequestChangePasswordJson>()
             .RuleFor(x => x.CurrentPassword, f => f.Internet.Password())
-            .RuleFor(x => x.NewPassword, f => f.Internet.Password())
+            .RuleFor(x => x.NewPassword, f => f.Internet.Password());
     }
 
 }

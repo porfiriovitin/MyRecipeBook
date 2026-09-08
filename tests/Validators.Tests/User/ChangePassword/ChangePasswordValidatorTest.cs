@@ -1,0 +1,55 @@
+﻿using CommomTestsUtilities.Requests;
+using MyRecipeBook.Application.UseCases.User.ChangePassword;
+using MyRecipeBook.Exceptions;
+using Shouldly;
+
+namespace Validators.Tests.User.ChangePassword;
+
+public class ChangePasswordValidatorTest
+{
+    [Fact]
+    public void Sucess()
+    {
+        var validator = new ChangePasswordValidator();
+
+        var request = RequestChangePasswordJsonBuilder.Build();
+
+        var result = validator.Validate(request);
+
+        result.IsValid.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void Validate_ShouldHaveError_WhenNewPasswordIsEmpty()
+    {
+        var validator = new ChangePasswordValidator();
+
+        var request = RequestChangePasswordJsonBuilder.Build();
+        request.NewPassword = string.Empty;
+
+        var result = validator.Validate(request);
+
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldContain(error => error.ErrorMessage.Equals(ResourceMessagesException.VALIDATION_PASSWORD_REQUIRED));
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(4)]
+    [InlineData(5)]
+    public void Validate_ShouldHaveError_WhenNewPasswordIsInvalid(int passwordLength)
+    {
+        var validator = new ChangePasswordValidator();
+
+        var request = RequestChangePasswordJsonBuilder.Build();
+        request.NewPassword = new string('a', passwordLength);
+
+        var result = validator.Validate(request);
+
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldContain(error => error.ErrorMessage.Equals(ResourceMessagesException.VALIDATION_PASSWORD_MIN_LENGTH));
+    }
+
+}
