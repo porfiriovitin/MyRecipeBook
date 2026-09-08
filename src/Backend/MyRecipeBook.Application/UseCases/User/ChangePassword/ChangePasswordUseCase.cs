@@ -2,6 +2,7 @@
 using MyRecipeBook.Domain.Identity;
 using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Domain.Security.PasswordHashing;
+using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
 
 namespace MyRecipeBook.Application.UseCases.User.ChangePassword;
@@ -33,7 +34,7 @@ public class ChangePasswordUseCase : IChangePasswordUseCase
         var result = new ChangePasswordValidator().Validate(request);
 
         if(_passwordHasher.VerifyPassword(request.CurrentPassword, loggedUser.Password) == false)
-            throw new ErrorOnValidationException(new List<string> { "Current password is incorrect." });
+            throw new ErrorOnValidationException([ResourceMessagesException.VALIDATION_CURRENT_PASSWORD]);
 
         if (!result.IsValid)
             throw new ErrorOnValidationException([.. result.Errors.Select(error => error.ErrorMessage)]);

@@ -15,6 +15,8 @@ public class MyRecipeBookApplicationFactory : WebApplicationFactory<Program>, IA
 {
     public UserIdentityManager FirstUser { get; private set; } = default!;
 
+    public string TOKEN_USER_NOT_FOUND_IN_DATABASE { get; private set; } = string.Empty;
+
     private readonly PostgreSqlContainer _postgreSqlContainer;
 
     public MyRecipeBookApplicationFactory()
@@ -55,8 +57,10 @@ public class MyRecipeBookApplicationFactory : WebApplicationFactory<Program>, IA
         var firstUserAcessToken = acessTokenGenerator.Generate(user);
 
         FirstUser = new UserIdentityManager(user, password, firstUserAcessToken);
+
+        TOKEN_USER_NOT_FOUND_IN_DATABASE = acessTokenGenerator.Generate(new MyRecipeBook.Domain.Entities.User());
     }
 
     Task IAsyncLifetime.DisposeAsync() => _postgreSqlContainer.StopAsync();
-    
+
 }
