@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MyRecipeBook.Domain.Enums;
 
-namespace MyRecipeBook.Domain.Entities
+namespace MyRecipeBook.Domain.Entities;
+
+public class RecipeDishType : EntityBase
 {
-    internal class RecipeDishType
-    {
-    }
+    public DishType Type { get; set; }
+    public Guid RecipeId { get; set; }
 }

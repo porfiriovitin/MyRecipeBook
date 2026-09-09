@@ -10,4 +10,5 @@ internal class MyRecipeBookDbContext : DbContext
     public MyRecipeBookDbContext(DbContextOptions<MyRecipeBookDbContext> options) : base(options) { }
 
     public DbSet<User> Users { get; set; }
+    public DbSet<Recipe> Recipes { get; set; }
 }
