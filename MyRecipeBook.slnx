@@ -2,6 +2,7 @@
   <Folder Name="/src/">
     <File Path=".env" />
     <File Path=".gitignore" />
+    <File Path="AGENTS.md" />
     <File Path="docker-compose.yaml" />
     <File Path="example.env" />
   </Folder>

@@ -11,4 +11,13 @@ internal class MyRecipeBookDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<Recipe> Recipes { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Recipe>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(recipe => recipe.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
 }
