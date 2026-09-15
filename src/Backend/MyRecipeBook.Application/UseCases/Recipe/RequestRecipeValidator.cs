@@ -37,10 +37,12 @@ public class RequestRecipeValidator : AbstractValidator<RequestRecipeJson>
             });
 
         RuleFor(recipe => recipe.DishTypes)
-            .NotEmpty().WithMessage(ResourceMessagesException.VALIDATION_RECIPE_DISH_TYPES_REQUIRED);
-
-        RuleForEach(recipe => recipe.DishTypes)
-            .IsInEnum().WithMessage(ResourceMessagesException.VALIDATION_RECIPE_DISH_TYPE_INVALID);
+        .Cascade(CascadeMode.Stop)
+        .NotEmpty()
+        .WithMessage(ResourceMessagesException.VALIDATION_RECIPE_DISH_TYPES_REQUIRED)
+        .ForEach(dishType => dishType
+        .IsInEnum()
+        .WithMessage(ResourceMessagesException.VALIDATION_RECIPE_DISH_TYPE_INVALID));
 
         RuleFor(recipe => recipe.CookTime)
             .IsInEnum().WithMessage(ResourceMessagesException.VALIDATION_RECIPE_COOK_TIME_INVALID);
