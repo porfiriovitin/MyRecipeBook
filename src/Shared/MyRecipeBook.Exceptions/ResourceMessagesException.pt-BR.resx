@@ -171,6 +171,9 @@
   <data name="VALIDATION_RECIPE_INSTRUCTION_ORDER_GREATER_THAN_ZERO" xml:space="preserve">
     <value>Oops! A ordem da instrução deve ser maior que zero.</value>
   </data>
+  <data name="VALIDATION_RECIPE_INSTRUCTION_ORDER_DUPLICATED" xml:space="preserve">
+    <value>Oops! As ordens das instruções não podem ser duplicadas.</value>
+  </data>
   <data name="VALIDATION_RECIPE_INSTRUCTION_REQUIRED" xml:space="preserve">
     <value>Oops! A instrução é obrigatória.</value>
   </data>

@@ -204,6 +204,12 @@ namespace MyRecipeBook.Exceptions {
             }
         }
 
+        public static string VALIDATION_RECIPE_INSTRUCTION_ORDER_DUPLICATED {
+            get {
+                return ResourceManager.GetString("VALIDATION_RECIPE_INSTRUCTION_ORDER_DUPLICATED", resourceCulture);
+            }
+        }
+
         public static string VALIDATION_RECIPE_INSTRUCTION_REQUIRED {
             get {
                 return ResourceManager.GetString("VALIDATION_RECIPE_INSTRUCTION_REQUIRED", resourceCulture);
