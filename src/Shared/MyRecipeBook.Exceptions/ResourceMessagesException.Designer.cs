@@ -167,6 +167,60 @@ namespace MyRecipeBook.Exceptions {
                 return ResourceManager.GetString("VALIDATION_PASSWORD_REQUIRED", resourceCulture);
             }
         }
+
+        public static string VALIDATION_RECIPE_COOK_TIME_INVALID {
+            get {
+                return ResourceManager.GetString("VALIDATION_RECIPE_COOK_TIME_INVALID", resourceCulture);
+            }
+        }
+
+        public static string VALIDATION_RECIPE_DISH_TYPE_INVALID {
+            get {
+                return ResourceManager.GetString("VALIDATION_RECIPE_DISH_TYPE_INVALID", resourceCulture);
+            }
+        }
+
+        public static string VALIDATION_RECIPE_DISH_TYPES_REQUIRED {
+            get {
+                return ResourceManager.GetString("VALIDATION_RECIPE_DISH_TYPES_REQUIRED", resourceCulture);
+            }
+        }
+
+        public static string VALIDATION_RECIPE_INGREDIENT_REQUIRED {
+            get {
+                return ResourceManager.GetString("VALIDATION_RECIPE_INGREDIENT_REQUIRED", resourceCulture);
+            }
+        }
+
+        public static string VALIDATION_RECIPE_INGREDIENTS_REQUIRED {
+            get {
+                return ResourceManager.GetString("VALIDATION_RECIPE_INGREDIENTS_REQUIRED", resourceCulture);
+            }
+        }
+
+        public static string VALIDATION_RECIPE_INSTRUCTION_ORDER_GREATER_THAN_ZERO {
+            get {
+                return ResourceManager.GetString("VALIDATION_RECIPE_INSTRUCTION_ORDER_GREATER_THAN_ZERO", resourceCulture);
+            }
+        }
+
+        public static string VALIDATION_RECIPE_INSTRUCTION_REQUIRED {
+            get {
+                return ResourceManager.GetString("VALIDATION_RECIPE_INSTRUCTION_REQUIRED", resourceCulture);
+            }
+        }
+
+        public static string VALIDATION_RECIPE_INSTRUCTIONS_REQUIRED {
+            get {
+                return ResourceManager.GetString("VALIDATION_RECIPE_INSTRUCTIONS_REQUIRED", resourceCulture);
+            }
+        }
+
+        public static string VALIDATION_RECIPE_TITLE_REQUIRED {
+            get {
+                return ResourceManager.GetString("VALIDATION_RECIPE_TITLE_REQUIRED", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! You don&apos;t have acess to this resource.

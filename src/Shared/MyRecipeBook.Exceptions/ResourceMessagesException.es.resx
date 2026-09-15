@@ -157,4 +157,31 @@ token de acceso caducado</value>
   <data name="VALIDATION_CURRENT_PASSWORD" xml:space="preserve">
     <value>La contraseña actual informada es incorrecta</value>
   </data>
+  <data name="VALIDATION_RECIPE_TITLE_REQUIRED" xml:space="preserve">
+    <value>¡Ups! Se requiere un título.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_INGREDIENTS_REQUIRED" xml:space="preserve">
+    <value>¡Ups! Se requiere al menos un ingrediente.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_INGREDIENT_REQUIRED" xml:space="preserve">
+    <value>¡Ups! Se requiere un ingrediente.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_INSTRUCTIONS_REQUIRED" xml:space="preserve">
+    <value>¡Ups! Se requiere al menos una instrucción.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_INSTRUCTION_ORDER_GREATER_THAN_ZERO" xml:space="preserve">
+    <value>¡Ups! El orden de la instrucción debe ser mayor que cero.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_INSTRUCTION_REQUIRED" xml:space="preserve">
+    <value>¡Ups! Se requiere una instrucción.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_DISH_TYPES_REQUIRED" xml:space="preserve">
+    <value>¡Ups! Se requiere al menos un tipo de plato.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_DISH_TYPE_INVALID" xml:space="preserve">
+    <value>¡Ups! El tipo de plato no es válido.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_COOK_TIME_INVALID" xml:space="preserve">
+    <value>¡Ups! El tiempo de preparación no es válido.</value>
+  </data>
 </root>

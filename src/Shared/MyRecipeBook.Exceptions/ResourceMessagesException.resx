@@ -156,4 +156,31 @@
   <data name="VALIDATION_CURRENT_PASSWORD" xml:space="preserve">
     <value>Oops! The current password is incorrect.</value>
   </data>
+  <data name="VALIDATION_RECIPE_TITLE_REQUIRED" xml:space="preserve">
+    <value>Oops! Title is required.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_INGREDIENTS_REQUIRED" xml:space="preserve">
+    <value>Oops! At least one ingredient is required.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_INGREDIENT_REQUIRED" xml:space="preserve">
+    <value>Oops! Ingredient is required.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_INSTRUCTIONS_REQUIRED" xml:space="preserve">
+    <value>Oops! At least one instruction is required.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_INSTRUCTION_ORDER_GREATER_THAN_ZERO" xml:space="preserve">
+    <value>Oops! The instruction order must be greater than zero.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_INSTRUCTION_REQUIRED" xml:space="preserve">
+    <value>Oops! Instruction is required.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_DISH_TYPES_REQUIRED" xml:space="preserve">
+    <value>Oops! At least one dish type is required.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_DISH_TYPE_INVALID" xml:space="preserve">
+    <value>Oops! Dish type is invalid.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_COOK_TIME_INVALID" xml:space="preserve">
+    <value>Oops! Cook time is invalid.</value>
+  </data>
 </root>

@@ -156,4 +156,31 @@
   <data name="VALIDATION_CURRENT_PASSWORD" xml:space="preserve">
     <value>A senha atual informada está incorreta</value>
   </data>
+  <data name="VALIDATION_RECIPE_TITLE_REQUIRED" xml:space="preserve">
+    <value>Oops! O título é obrigatório.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_INGREDIENTS_REQUIRED" xml:space="preserve">
+    <value>Oops! Informe pelo menos um ingrediente.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_INGREDIENT_REQUIRED" xml:space="preserve">
+    <value>Oops! O ingrediente é obrigatório.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_INSTRUCTIONS_REQUIRED" xml:space="preserve">
+    <value>Oops! Informe pelo menos uma instrução.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_INSTRUCTION_ORDER_GREATER_THAN_ZERO" xml:space="preserve">
+    <value>Oops! A ordem da instrução deve ser maior que zero.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_INSTRUCTION_REQUIRED" xml:space="preserve">
+    <value>Oops! A instrução é obrigatória.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_DISH_TYPES_REQUIRED" xml:space="preserve">
+    <value>Oops! Informe pelo menos um tipo de prato.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_DISH_TYPE_INVALID" xml:space="preserve">
+    <value>Oops! O tipo de prato é inválido.</value>
+  </data>
+  <data name="VALIDATION_RECIPE_COOK_TIME_INVALID" xml:space="preserve">
+    <value>Oops! O tempo de preparo é inválido.</value>
+  </data>
 </root>
