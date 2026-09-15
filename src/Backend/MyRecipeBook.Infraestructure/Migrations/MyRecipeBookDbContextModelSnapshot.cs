@@ -41,7 +41,7 @@ namespace MyRecipeBook.Infraestructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -165,8 +165,7 @@ namespace MyRecipeBook.Infraestructure.Migrations
                     b.HasOne("MyRecipeBook.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("MyRecipeBook.Domain.Entities.RecipeDishType", b =>

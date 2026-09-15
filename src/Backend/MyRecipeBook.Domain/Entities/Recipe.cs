@@ -9,7 +9,7 @@ public class Recipe : EntityBase
     public ICollection<RecipeInstruction> Instructions { get; set; } = [];
     public ICollection<RecipeDishType> DishTypes { get; set; } = [];
     public CookTime CookTime { get; set; }
-    public Guid UserId { get; set; }
+    public Guid? UserId { get; set; }
 
 }
 

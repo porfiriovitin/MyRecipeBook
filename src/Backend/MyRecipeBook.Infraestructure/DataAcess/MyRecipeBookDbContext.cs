@@ -18,6 +18,6 @@ internal class MyRecipeBookDbContext : DbContext
             .HasOne<User>()
             .WithMany()
             .HasForeignKey(recipe => recipe.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }
