@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MyRecipeBook.Application.UseCases.Login.WithEmailAndPassword;
+using MyRecipeBook.Application.UseCases.Recipe;
+using MyRecipeBook.Application.UseCases.Recipe.Register;
 using MyRecipeBook.Application.UseCases.User;
 using MyRecipeBook.Application.UseCases.User.ChangePassword;
 using MyRecipeBook.Application.UseCases.User.Profile;
@@ -12,10 +14,16 @@ public static class DependencyInjectionExtension
 {
     public static void AddApplication(this IServiceCollection services)
     {
+        services.AddUseCases();
+    }
+
+    private static void AddUseCases(this IServiceCollection services)
+    {
         services.AddScoped<IRegisterUserAccountUseCase, RegisterUserAccountUseCase>();
         services.AddScoped<ILoginWithEmailAndPasswordUseCase, LoginWithEmailAndPasswordUseCase>();
         services.AddScoped<IGetUserProfileUseCase, GetUserProfileUseCase>();
         services.AddScoped<IChangePasswordUseCase, ChangePasswordUseCase>();
         services.AddScoped<IUpdateUserUseCase, UpdateUserUseCase>();
+        services.AddScoped<IRegisterRecipeUseCase, RegisterRecipeUseCase>();
     }
 }
