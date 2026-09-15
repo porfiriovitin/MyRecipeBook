@@ -8,6 +8,8 @@ internal static class MapsterConfiguration
 {
     internal static void Configure()
     {
+        TypeAdapterConfig<RequestRegisterUserAccountJson, User>.NewConfig().Ignore(dest => dest.Password);
+
         TypeAdapterConfig<RequestRecipeJson, Recipe>.NewConfig()
             .Map(dest => dest.Ingredients, src => src.Ingredients.Select(ingredient => new RecipeIngredient
             {
@@ -22,5 +24,6 @@ internal static class MapsterConfiguration
             {
                 Type = (Domain.Enums.DishType)dishType
             }));
+
     }
 }

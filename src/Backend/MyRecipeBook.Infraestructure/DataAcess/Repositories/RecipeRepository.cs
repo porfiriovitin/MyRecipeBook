@@ -3,7 +3,7 @@ using MyRecipeBook.Domain.Repositories.Recipe;
 
 namespace MyRecipeBook.Infraestructure.DataAcess.Repositories;
 
-internal class RecipeRepository : IRecipeWriteOnlyRepository
+internal sealed class RecipeRepository : IRecipeWriteOnlyRepository
 {
     private readonly MyRecipeBookDbContext _dbContext;
 
