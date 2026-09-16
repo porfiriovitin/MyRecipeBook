@@ -26,4 +26,12 @@ public class RecipeController : ControllerBase
             Data = result
         });
     }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(PayloadResponse<ResponseRecipeJson>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PayloadResponse<object>), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById([FromRoute] Guid id)
+    {
+        return Ok();
+    }
 }
