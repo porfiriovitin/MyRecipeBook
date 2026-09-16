@@ -9,7 +9,7 @@ using MyRecipeBook.Exceptions.ExceptionsBase;
 
 namespace MyRecipeBook.Application.UseCases.Recipe;
 
-internal class RegisterRecipeUseCase : IRegisterRecipeUseCase
+public class RegisterRecipeUseCase : IRegisterRecipeUseCase
 {
     private readonly IRecipeWriteOnlyRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
