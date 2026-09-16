@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyRecipeBook.Infraestructure.Migrations
 {
     [DbContext(typeof(MyRecipeBookDbContext))]
-    [Migration("20260914235221_AddRecipeDetails")]
-    partial class AddRecipeDetails
+    [Migration("20260916221430_AddRecipeFeatures")]
+    partial class AddRecipeFeatures
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,8 +34,9 @@ namespace MyRecipeBook.Infraestructure.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("CookTime")
-                        .HasColumnType("integer");
+                    b.Property<string>("CookTime")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -44,7 +45,7 @@ namespace MyRecipeBook.Infraestructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -69,8 +70,9 @@ namespace MyRecipeBook.Infraestructure.Migrations
                     b.Property<Guid>("RecipeId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -168,8 +170,7 @@ namespace MyRecipeBook.Infraestructure.Migrations
                     b.HasOne("MyRecipeBook.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("MyRecipeBook.Domain.Entities.RecipeDishType", b =>

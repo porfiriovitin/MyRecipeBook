@@ -31,8 +31,9 @@ namespace MyRecipeBook.Infraestructure.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("CookTime")
-                        .HasColumnType("integer");
+                    b.Property<string>("CookTime")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -66,8 +67,9 @@ namespace MyRecipeBook.Infraestructure.Migrations
                     b.Property<Guid>("RecipeId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

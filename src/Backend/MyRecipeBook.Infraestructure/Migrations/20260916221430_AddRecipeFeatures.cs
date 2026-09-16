@@ -6,17 +6,39 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MyRecipeBook.Infraestructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddRecipeDetails : Migration
+    public partial class AddRecipeFeatures : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Recipes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    CookTime = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Active = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Recipes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Recipes_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RecipeDishType",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Type = table.Column<int>(type: "integer", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false),
                     RecipeId = table.Column<Guid>(type: "uuid", nullable: false),
                     Active = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -89,6 +111,11 @@ namespace MyRecipeBook.Infraestructure.Migrations
                 name: "IX_RecipeInstruction_RecipeId",
                 table: "RecipeInstruction",
                 column: "RecipeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipes_UserId",
+                table: "Recipes",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -102,6 +129,9 @@ namespace MyRecipeBook.Infraestructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "RecipeInstruction");
+
+            migrationBuilder.DropTable(
+                name: "Recipes");
         }
     }
 }

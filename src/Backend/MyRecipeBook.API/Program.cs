@@ -136,6 +136,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 var app = builder.Build();
 
+if (ExecuteMigrationsOnStartup)
+{
+    await ExecuteMigrations();
+}
+
 /// :: Configure localization middleware.
 var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();
 
@@ -155,11 +160,6 @@ app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapControllers();
-
-if (ExecuteMigrationsOnStartup)
-{
-    await ExecuteMigrations();
-}
 
 app.Run();
 
