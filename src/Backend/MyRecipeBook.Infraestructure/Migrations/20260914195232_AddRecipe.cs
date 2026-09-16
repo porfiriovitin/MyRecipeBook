@@ -16,7 +16,7 @@ namespace MyRecipeBook.Infraestructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
-                    CookTime = table.Column<int>(type: "integer", nullable: false),
+                    CookTime = table.Column<string>(type: "string", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: true),
                     Active = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)

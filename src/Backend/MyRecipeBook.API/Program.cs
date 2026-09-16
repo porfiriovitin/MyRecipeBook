@@ -18,6 +18,7 @@ using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 
 bool ExecuteMigrationsOnStartup = true;
 
@@ -26,8 +27,9 @@ var builder = WebApplication.CreateBuilder(args);
 /// :: Add services to the container.
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    /// :: Custom string converter to handle string serialization and deserialization.
+    /// :: Custom string converter to handle string serialization and enums.
     options.JsonSerializerOptions.Converters.Add(new StringConverter());
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
 builder.Services.AddEndpointsApiExplorer();

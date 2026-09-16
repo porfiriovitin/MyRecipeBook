@@ -19,5 +19,8 @@ internal class MyRecipeBookDbContext : DbContext
             .WithMany()
             .HasForeignKey(recipe => recipe.UserId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<Recipe>().Property(recipe => recipe.CookTime).HasConversion<string>();
+        modelBuilder.Entity<RecipeDishType>().Property(dishType => dishType.Type).HasConversion<string>();
     }
 }
