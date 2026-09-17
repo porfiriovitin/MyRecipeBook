@@ -186,4 +186,7 @@
   <data name="VALIDATION_RECIPE_COOK_TIME_INVALID" xml:space="preserve">
     <value>Oops! O tempo de preparo é inválido.</value>
   </data>
+  <data name="VALIDATION_RECIPE_NOT_FOUND" xml:space="preserve">
+    <value>Oops! Receita não encontrada.</value>
+  </data>
 </root>

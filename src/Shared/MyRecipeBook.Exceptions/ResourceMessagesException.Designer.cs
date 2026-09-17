@@ -167,61 +167,100 @@ namespace MyRecipeBook.Exceptions {
                 return ResourceManager.GetString("VALIDATION_PASSWORD_REQUIRED", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! Cook time is invalid..
+        /// </summary>
         public static string VALIDATION_RECIPE_COOK_TIME_INVALID {
             get {
                 return ResourceManager.GetString("VALIDATION_RECIPE_COOK_TIME_INVALID", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! Dish type is invalid..
+        /// </summary>
         public static string VALIDATION_RECIPE_DISH_TYPE_INVALID {
             get {
                 return ResourceManager.GetString("VALIDATION_RECIPE_DISH_TYPE_INVALID", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! At least one dish type is required..
+        /// </summary>
         public static string VALIDATION_RECIPE_DISH_TYPES_REQUIRED {
             get {
                 return ResourceManager.GetString("VALIDATION_RECIPE_DISH_TYPES_REQUIRED", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! Ingredient is required..
+        /// </summary>
         public static string VALIDATION_RECIPE_INGREDIENT_REQUIRED {
             get {
                 return ResourceManager.GetString("VALIDATION_RECIPE_INGREDIENT_REQUIRED", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! At least one ingredient is required..
+        /// </summary>
         public static string VALIDATION_RECIPE_INGREDIENTS_REQUIRED {
             get {
                 return ResourceManager.GetString("VALIDATION_RECIPE_INGREDIENTS_REQUIRED", resourceCulture);
             }
         }
-
-        public static string VALIDATION_RECIPE_INSTRUCTION_ORDER_GREATER_THAN_ZERO {
-            get {
-                return ResourceManager.GetString("VALIDATION_RECIPE_INSTRUCTION_ORDER_GREATER_THAN_ZERO", resourceCulture);
-            }
-        }
-
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! Instruction orders cannot be duplicated..
+        /// </summary>
         public static string VALIDATION_RECIPE_INSTRUCTION_ORDER_DUPLICATED {
             get {
                 return ResourceManager.GetString("VALIDATION_RECIPE_INSTRUCTION_ORDER_DUPLICATED", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! The instruction order must be greater than zero..
+        /// </summary>
+        public static string VALIDATION_RECIPE_INSTRUCTION_ORDER_GREATER_THAN_ZERO {
+            get {
+                return ResourceManager.GetString("VALIDATION_RECIPE_INSTRUCTION_ORDER_GREATER_THAN_ZERO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! Instruction is required..
+        /// </summary>
         public static string VALIDATION_RECIPE_INSTRUCTION_REQUIRED {
             get {
                 return ResourceManager.GetString("VALIDATION_RECIPE_INSTRUCTION_REQUIRED", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! At least one instruction is required..
+        /// </summary>
         public static string VALIDATION_RECIPE_INSTRUCTIONS_REQUIRED {
             get {
                 return ResourceManager.GetString("VALIDATION_RECIPE_INSTRUCTIONS_REQUIRED", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! Recipe not found..
+        /// </summary>
+        public static string VALIDATION_RECIPE_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("VALIDATION_RECIPE_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! Title is required..
+        /// </summary>
         public static string VALIDATION_RECIPE_TITLE_REQUIRED {
             get {
                 return ResourceManager.GetString("VALIDATION_RECIPE_TITLE_REQUIRED", resourceCulture);

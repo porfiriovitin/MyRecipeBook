@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyRecipeBook.Application.UseCases.Recipe.GetById;
 using MyRecipeBook.Application.UseCases.Recipe.Register;
 using MyRecipeBook.Communication.Enums;
 using MyRecipeBook.Communication.Requests;
@@ -30,8 +31,15 @@ public class RecipeController : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(PayloadResponse<ResponseRecipeJson>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(PayloadResponse<object>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById([FromRoute] Guid id)
+    public async Task<IActionResult> GetById([FromRoute] Guid id, [FromServices] IGetRecipeByIdUseCase getRecipeByIdUseCase)
     {
-        return Ok();
+        ResponseRecipeJson result = await getRecipeByIdUseCase.Execute(id);
+
+        return StatusCode(StatusCodes.Status201Created, new PayloadResponse<ResponseRecipeJson>
+        {
+            Status = nameof(ResponseStatus.Success),
+            Message = "Recipe found successfully.",
+            Data = result
+        });
     }
 }

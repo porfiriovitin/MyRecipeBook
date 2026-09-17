@@ -187,4 +187,7 @@ token de acceso caducado</value>
   <data name="VALIDATION_RECIPE_COOK_TIME_INVALID" xml:space="preserve">
     <value>¡Ups! El tiempo de preparación no es válido.</value>
   </data>
+  <data name="VALIDATION_RECIPE_NOT_FOUND" xml:space="preserve">
+    <value>¡Ups! Receta no encontrada.</value>
+  </data>
 </root>
