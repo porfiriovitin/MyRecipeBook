@@ -18,13 +18,14 @@ internal sealed class RecipeRepository : IRecipeWriteOnlyRepository, IRecipeRead
         await _dbContext.Recipes.AddAsync(recipe);
     }
 
-    public async Task<Recipe?> GetByIdAsync(Guid recipeId, Guid userId)
+    public async Task<Recipe?> GetByIdAsync(Guid recipeId, Guid? userId)
     {
         return await _dbContext.Recipes
             .AsNoTracking()
             .Where(recipe => recipe.Id == recipeId && recipe.UserId == userId && recipe.Active)
             .Include(recipe => recipe.Ingredients)
-            .Include(recipe => recipe.Instructions)
+            .Include(recipe => recipe.Instructions.OrderBy(i => i.Order))
             .Include(recipe => recipe.DishTypes).FirstOrDefaultAsync();
     }
+
 }
