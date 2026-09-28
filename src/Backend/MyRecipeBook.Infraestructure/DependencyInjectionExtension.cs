@@ -46,6 +46,7 @@ namespace MyRecipeBook.Infraestructure
             /// :: Recipes repository.
             services.AddScoped<IRecipeWriteOnlyRepository, RecipeRepository>();
             services.AddScoped<IRecipeReadOnlyRepository, RecipeRepository>();
+            services.AddScoped<IRecipeUpdateOnlyRepository, RecipeRepository>();
         }
 
         private static void AddSecurityHandlers(this IServiceCollection services)

@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using MyRecipeBook.Domain.Entities;
 using MyRecipeBook.Domain.Repositories.Recipe;
 
 namespace MyRecipeBook.Infraestructure.DataAcess.Repositories;
 
-internal sealed class RecipeRepository : IRecipeWriteOnlyRepository, IRecipeReadOnlyRepository
+internal sealed class RecipeRepository : IRecipeWriteOnlyRepository, IRecipeReadOnlyRepository, IRecipeUpdateOnlyRepository
 {
     private readonly MyRecipeBookDbContext _dbContext;
 
@@ -25,14 +26,21 @@ internal sealed class RecipeRepository : IRecipeWriteOnlyRepository, IRecipeRead
         return rowsAffected > 0;
     }
 
-    public async Task<Recipe?> GetByIdAsync(Guid recipeId, Guid? userId)
+    async Task<Recipe?> IRecipeReadOnlyRepository.GetByIdAsync(Guid recipeId, Guid? userId)
     {
-        return await _dbContext.Recipes
-            .AsNoTracking()
-            .Where(recipe => recipe.Id == recipeId && recipe.UserId == userId && recipe.Active)
-            .Include(recipe => recipe.Ingredients)
-            .Include(recipe => recipe.Instructions.OrderBy(i => i.Order))
-            .Include(recipe => recipe.DishTypes).FirstOrDefaultAsync();
+        return await GetFullRecipe().AsNoTracking().FirstOrDefaultAsync(recipe => recipe.Active && recipe.Id == recipeId && recipe.UserId == userId);
     }
 
+    async Task<Recipe?> IRecipeUpdateOnlyRepository.GetByIdAsync(Guid recipeId, Guid? userId)
+    {
+        return await GetFullRecipe().FirstOrDefaultAsync(recipe => recipe.Active && recipe.Id == recipeId && recipe.UserId == userId);
+    }
+
+    private IIncludableQueryable<Recipe, ICollection<RecipeDishType>> GetFullRecipe()
+    {
+       return  _dbContext.Recipes
+          .Include(recipe => recipe.Ingredients)
+          .Include(recipe => recipe.Instructions.OrderBy(i => i.Order))
+          .Include(recipe => recipe.DishTypes);
+    }
 }
