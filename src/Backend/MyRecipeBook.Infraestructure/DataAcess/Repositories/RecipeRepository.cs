@@ -18,6 +18,13 @@ internal sealed class RecipeRepository : IRecipeWriteOnlyRepository, IRecipeRead
         await _dbContext.Recipes.AddAsync(recipe);
     }
 
+    public async Task<bool> DeleteById(Guid recipeId, Guid userId)
+    {
+        var rowsAffected = await _dbContext.Recipes.Where(recipe => recipe.Id == recipeId && recipe.UserId == userId && recipe.Active).ExecuteDeleteAsync();
+
+        return rowsAffected > 0;
+    }
+
     public async Task<Recipe?> GetByIdAsync(Guid recipeId, Guid? userId)
     {
         return await _dbContext.Recipes

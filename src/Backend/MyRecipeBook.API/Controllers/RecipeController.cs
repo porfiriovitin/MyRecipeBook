@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyRecipeBook.Application.UseCases.Recipe.Delete;
 using MyRecipeBook.Application.UseCases.Recipe.GetById;
 using MyRecipeBook.Application.UseCases.Recipe.Register;
 using MyRecipeBook.Communication.Enums;
@@ -35,11 +36,21 @@ public class RecipeController : ControllerBase
     {
         ResponseRecipeJson result = await getRecipeByIdUseCase.Execute(id);
 
-        return StatusCode(StatusCodes.Status201Created, new PayloadResponse<ResponseRecipeJson>
+        return StatusCode(StatusCodes.Status200OK, new PayloadResponse<ResponseRecipeJson>
         {
             Status = nameof(ResponseStatus.Success),
             Message = "Recipe found successfully.",
             Data = result
         });
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(PayloadResponse<object>), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeletRecipe([FromRoute] Guid id, [FromServices] IDeleteRecipebyIdUseCase deleteRecipeByIdUseCase)
+    {
+        await deleteRecipeByIdUseCase.Execute(id);
+
+        return StatusCode(StatusCodes.Status204NoContent);
     }
 }
