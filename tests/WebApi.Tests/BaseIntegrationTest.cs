@@ -49,6 +49,15 @@ public abstract class BaseIntegrationTest : IClassFixture<MyRecipeBookApplicatio
         return await _httpClient.GetAsync(requestUri);
     }
 
+    protected async Task<HttpResponseMessage> Delete(string requestUri, string token, string culture = "pt-BR")
+    {
+        ChangeRequestCulture(culture);
+
+        AuthorizeRequest(token);
+
+        return await _httpClient.DeleteAsync(requestUri);
+    }
+
     private void ChangeRequestCulture(string culture)
     {
         _httpClient.DefaultRequestHeaders.AcceptLanguage.Clear();

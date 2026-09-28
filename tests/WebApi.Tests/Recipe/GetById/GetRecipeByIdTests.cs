@@ -31,8 +31,10 @@ public class GetRecipeByIdTests : BaseIntegrationTest
 
         var responseData = await JsonDocument.ParseAsync(responseBody);
 
-        responseData.RootElement.GetProperty("id").GetGuid().ShouldBe(recipe.Id);
-        responseData.RootElement.GetProperty("title").GetString().ShouldBe(recipe.Title);
+        var recipeData = responseData.RootElement.GetProperty("data");
+
+        recipeData.GetProperty("id").GetGuid().ShouldBe(recipe.Id);
+        recipeData.GetProperty("title").GetString().ShouldBe(recipe.Title);
     }
 
     [Theory]
