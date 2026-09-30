@@ -14,6 +14,8 @@ internal class MyRecipeBookDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Recipe>()
             .HasOne<User>()
             .WithMany()
@@ -22,5 +24,10 @@ internal class MyRecipeBookDbContext : DbContext
 
         modelBuilder.Entity<Recipe>().Property(recipe => recipe.CookTime).HasConversion<string>();
         modelBuilder.Entity<RecipeDishType>().Property(dishType => dishType.Type).HasConversion<string>();
+
+        modelBuilder.Entity<RecipeIngredient>().Property(ingredient => ingredient.Id).ValueGeneratedNever();
+        modelBuilder.Entity<RecipeInstruction>().Property(instruction => instruction.Id).ValueGeneratedNever();
+        modelBuilder.Entity<RecipeDishType>().Property(dishType => dishType.Id).ValueGeneratedNever();
+
     }
 }

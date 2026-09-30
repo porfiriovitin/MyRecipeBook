@@ -19,7 +19,6 @@ public class UpdateRecipebyIdUseCase : IUpdateRecipeByIdUseCase
         _loggedUser = loggedUser;
         _repository = repository;
         _unitOfWork = unitOfWork;
-
     }
 
     public async Task Execute(Guid RecipeId, RequestRecipeJson request)

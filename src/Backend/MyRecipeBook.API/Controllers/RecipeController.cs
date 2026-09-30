@@ -33,7 +33,7 @@ public class RecipeController : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(PayloadResponse<ResponseRecipeJson>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(PayloadResponse<object>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById([FromRoute] Guid recipeId, [FromServices] IGetRecipeByIdUseCase useCase)
+    public async Task<IActionResult> GetById([FromRoute(Name = "id")] Guid recipeId, [FromServices] IGetRecipeByIdUseCase useCase)
     {
         ResponseRecipeJson result = await useCase.Execute(recipeId);
 
@@ -48,7 +48,7 @@ public class RecipeController : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(PayloadResponse<object>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete([FromRoute] Guid recipeId, [FromServices] IDeleteRecipebyIdUseCase useCase)
+    public async Task<IActionResult> Delete([FromRoute(Name = "id")] Guid recipeId, [FromServices] IDeleteRecipebyIdUseCase useCase)
     {
         await useCase.Execute(recipeId);
 
@@ -60,7 +60,7 @@ public class RecipeController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(PayloadResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(PayloadResponse<object>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update([FromRoute] Guid recipeId, [FromBody]RequestRecipeJson request, [FromServices] IUpdateRecipeByIdUseCase useCase)
+    public async Task<IActionResult> Update([FromRoute(Name = "id")] Guid recipeId, [FromBody]RequestRecipeJson request, [FromServices] IUpdateRecipeByIdUseCase useCase)
     {
         await useCase.Execute(recipeId, request);
 
