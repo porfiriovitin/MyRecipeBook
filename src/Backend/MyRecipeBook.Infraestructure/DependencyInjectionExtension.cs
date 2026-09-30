@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MyRecipeBook.Domain.Cache;
 using MyRecipeBook.Domain.Identity;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.Recipe;
 using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Domain.Security.PasswordHashing;
 using MyRecipeBook.Domain.Security.Tokens;
+using MyRecipeBook.Infraestructure.Cache;
 using MyRecipeBook.Infraestructure.DataAcess;
 using MyRecipeBook.Infraestructure.DataAcess.Repositories;
 using MyRecipeBook.Infraestructure.Identity;
@@ -23,6 +25,7 @@ namespace MyRecipeBook.Infraestructure
             AddTokensHandlers(services, configuration);
             AddDbContext(services, configuration);
             AddSecurityHandlers(services);
+            AddCacheHandlers(services);
         }
 
         private static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
@@ -55,7 +58,7 @@ namespace MyRecipeBook.Infraestructure
             services.AddScoped<ILoggedUser, LoggedUser>();
         }
 
-        private static void AddTokensHandlers(this IServiceCollection services, IConfiguration configuration) 
+        private static void AddTokensHandlers(this IServiceCollection services, IConfiguration configuration)
         {
             var expirationTimeInMinutes = configuration.GetValue<uint>("Jwt:ExpirationTimeInMinutes");
             var SigningKey = configuration.GetValue<string>("Jwt:SigningKey")!;
@@ -64,6 +67,12 @@ namespace MyRecipeBook.Infraestructure
             {
                 return new JwtTokenHandler(expirationTimeInMinutes, SigningKey);
             });
+        }
+
+        private static void AddCacheHandlers(this IServiceCollection services)
+        {
+            services.AddMemoryCache();
+            services.AddSingleton<IRecipesCache, RecipesCache>();
         }
     }
 }

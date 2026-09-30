@@ -68,7 +68,7 @@ public class RecipeController : ControllerBase
         return StatusCode(StatusCodes.Status204NoContent);
     }
 
-    [HttpPut("recent")]
+    [HttpGet("recent")]
     [ProducesResponseType(typeof(PayloadResponse<ResponseRecipesJson>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetRecent([FromServices] IGetRecentRecipesUseCase useCase)
     {

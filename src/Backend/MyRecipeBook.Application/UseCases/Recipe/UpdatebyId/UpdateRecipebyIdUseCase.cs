@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MyRecipeBook.Communication.Requests;
+using MyRecipeBook.Domain.Cache;
 using MyRecipeBook.Domain.Identity;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.Recipe;
@@ -13,12 +14,14 @@ public class UpdateRecipebyIdUseCase : IUpdateRecipeByIdUseCase
     private readonly ILoggedUser _loggedUser;
     private readonly IRecipeUpdateOnlyRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IRecipesCache _cache;
 
-    public UpdateRecipebyIdUseCase(ILoggedUser loggedUser, IRecipeUpdateOnlyRepository repository, IUnitOfWork unitOfWork)
+    public UpdateRecipebyIdUseCase(ILoggedUser loggedUser, IRecipeUpdateOnlyRepository repository, IUnitOfWork unitOfWork, IRecipesCache cache)
     {
         _loggedUser = loggedUser;
         _repository = repository;
         _unitOfWork = unitOfWork;
+        _cache = cache;
     }
 
     public async Task Execute(Guid RecipeId, RequestRecipeJson request)
@@ -33,6 +36,8 @@ public class UpdateRecipebyIdUseCase : IUpdateRecipeByIdUseCase
         request.Adapt(recipe);
 
         await _unitOfWork.Commit();
+
+        _cache.RemoveRecent(_loggedUser.GetUserId());
     }
 
 

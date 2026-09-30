@@ -20,6 +20,13 @@ public class IRecipeReadOnlyRepositoryBuilder
         return this;
     }
 
+    public IRecipeReadOnlyRepositoryBuilder GetRecentRecipes(Guid userId, IEnumerable<Recipe> recipes)
+    {
+        _mock.Setup(repository => repository.GetRecentRecipes(userId)).ReturnsAsync(recipes);
+
+        return this;
+    }
+
     public IRecipeReadOnlyRepository Build() => _mock.Object;
 
 }

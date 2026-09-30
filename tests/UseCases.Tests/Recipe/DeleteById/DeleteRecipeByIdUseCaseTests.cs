@@ -1,6 +1,8 @@
 using CommomTestsUtilities;
 using CommomTestsUtilities.Entities;
 using CommomTestsUtilities.Repositories;
+using Moq;
+using MyRecipeBook.Domain.Cache;
 using MyRecipeBook.Application.UseCases.Recipe.DeletebyId;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
@@ -18,9 +20,13 @@ public class DeleteRecipeByIdUseCaseTests
         var repository = new IRecipeWriteOnlyRepositoryBuilder()
             .DeleteById(recipe.Id, user.Id, true)
             .BuildRepository();
-        var useCase = new DeleteRecipeByIdUseCase(repository, ILoggedUserBuilder.Build(user));
+        var cache = new Mock<IRecipesCache>();
+        var useCase = new DeleteRecipeByIdUseCase(repository, ILoggedUserBuilder.Build(user), cache.Object);
 
         await useCase.Execute(recipe.Id);
+
+        cache.Verify(item => item.RemoveRecent(user.Id), Times.Once);
+        cache.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -31,10 +37,12 @@ public class DeleteRecipeByIdUseCaseTests
         var repository = new IRecipeWriteOnlyRepositoryBuilder()
             .DeleteById(recipeId, user.Id, false)
             .BuildRepository();
-        var useCase = new DeleteRecipeByIdUseCase(repository, ILoggedUserBuilder.Build(user));
+        var cache = new Mock<IRecipesCache>();
+        var useCase = new DeleteRecipeByIdUseCase(repository, ILoggedUserBuilder.Build(user), cache.Object);
 
         var exception = await useCase.Execute(recipeId).ShouldThrowAsync<NotFoundException>();
 
         exception.GetErrorMessages().ShouldContain(ResourceMessagesException.VALIDATION_RECIPE_NOT_FOUND);
+        cache.Verify(item => item.RemoveRecent(It.IsAny<Guid>()), Times.Never);
     }
 }

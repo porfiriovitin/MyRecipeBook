@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using MyRecipeBook.Application;
 using MyRecipeBook.Application.UseCases.Recipe.UpdatebyId;
+using MyRecipeBook.Domain.Cache;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
@@ -30,7 +31,11 @@ public class UpdateRecipeByIdUseCaseTests
         var request = RequestRecipeJsonBuilder.Build();
         var unitOfWork = IUnitOfWorkBuilder.Build();
 
-        var useCase = CreateUseCase(recipe, user, unitOfWork);
+        var cache = new Mock<IRecipesCache>();
+        var committed = false;
+        Mock.Get(unitOfWork).Setup(work => work.Commit()).Callback(() => committed = true).Returns(Task.CompletedTask);
+        cache.Setup(item => item.RemoveRecent(user.Id)).Callback(() => committed.ShouldBeTrue());
+        var useCase = CreateUseCase(recipe, user, unitOfWork, cache.Object);
 
         await useCase.Execute(recipe.Id, request);
 
@@ -43,6 +48,8 @@ public class UpdateRecipeByIdUseCaseTests
         recipe.DishTypes.Select(item => item.Type).ShouldBe(request.DishTypes.Select(item => (MyRecipeBook.Domain.Enums.DishType)item));
         
         Mock.Get(unitOfWork).Verify(work => work.Commit(), Times.Once);
+        cache.Verify(item => item.RemoveRecent(user.Id), Times.Once);
+        cache.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -58,7 +65,8 @@ public class UpdateRecipeByIdUseCaseTests
 
         var repository = new IRecipeUpdateOnlyRepositoryBuilder().GetById(recipe).Build();
         var unitOfWork = IUnitOfWorkBuilder.Build();
-        var useCase = new UpdateRecipebyIdUseCase(ILoggedUserBuilder.Build(user), repository, unitOfWork);
+        var cache = new Mock<IRecipesCache>();
+        var useCase = new UpdateRecipebyIdUseCase(ILoggedUserBuilder.Build(user), repository, unitOfWork, cache.Object);
 
         var exception = await useCase.Execute(recipe.Id, request).ShouldThrowAsync<ErrorOnValidationException>();
 
@@ -68,6 +76,7 @@ public class UpdateRecipeByIdUseCaseTests
 
         Mock.Get(repository).Verify(item => item.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid?>()), Times.Never);
         Mock.Get(unitOfWork).Verify(work => work.Commit(), Times.Never);
+        cache.Verify(item => item.RemoveRecent(It.IsAny<Guid>()), Times.Never);
     }
 
     [Fact]
@@ -75,12 +84,14 @@ public class UpdateRecipeByIdUseCaseTests
     {
         var (user, _) = UserBuilder.Build();
         var unitOfWork = IUnitOfWorkBuilder.Build();
-        var useCase = CreateUseCase(null, user, unitOfWork);
+        var cache = new Mock<IRecipesCache>();
+        var useCase = CreateUseCase(null, user, unitOfWork, cache.Object);
 
         var exception = await useCase.Execute(Guid.NewGuid(), RequestRecipeJsonBuilder.Build()).ShouldThrowAsync<NotFoundException>();
 
         exception.GetErrorMessages().ShouldContain(ResourceMessagesException.VALIDATION_RECIPE_NOT_FOUND);
         Mock.Get(unitOfWork).Verify(work => work.Commit(), Times.Never);
+        cache.Verify(item => item.RemoveRecent(It.IsAny<Guid>()), Times.Never);
     }
 
     [Fact]
@@ -92,22 +103,40 @@ public class UpdateRecipeByIdUseCaseTests
         var originalTitle = recipe.Title;
         var unitOfWork = IUnitOfWorkBuilder.Build();
 
-        var useCase = CreateUseCase(recipe, user, unitOfWork);
+        var cache = new Mock<IRecipesCache>();
+        var useCase = CreateUseCase(recipe, user, unitOfWork, cache.Object);
 
         var exception = await useCase.Execute(recipe.Id, RequestRecipeJsonBuilder.Build()).ShouldThrowAsync<NotFoundException>();
 
         exception.GetErrorMessages().ShouldContain(ResourceMessagesException.VALIDATION_RECIPE_NOT_FOUND);
         recipe.Title.ShouldBe(originalTitle);
         Mock.Get(unitOfWork).Verify(work => work.Commit(), Times.Never);
+        cache.Verify(item => item.RemoveRecent(It.IsAny<Guid>()), Times.Never);
     }
 
-    private static UpdateRecipebyIdUseCase CreateUseCase(DomainRecipe? recipe, DomainUser user, IUnitOfWork unitOfWork)
+    [Fact]
+    public async Task ShouldNotInvalidateCache_WhenCommitFails()
+    {
+        new ServiceCollection().AddApplication();
+        var (user, _) = UserBuilder.Build();
+        var recipe = RecipeBuilder.Build(user.Id);
+        var unitOfWork = IUnitOfWorkBuilder.Build();
+        Mock.Get(unitOfWork).Setup(work => work.Commit()).ThrowsAsync(new InvalidOperationException());
+        var cache = new Mock<IRecipesCache>();
+        var useCase = CreateUseCase(recipe, user, unitOfWork, cache.Object);
+
+        await useCase.Execute(recipe.Id, RequestRecipeJsonBuilder.Build()).ShouldThrowAsync<InvalidOperationException>();
+
+        cache.Verify(item => item.RemoveRecent(It.IsAny<Guid>()), Times.Never);
+    }
+
+    private static UpdateRecipebyIdUseCase CreateUseCase(DomainRecipe? recipe, DomainUser user, IUnitOfWork unitOfWork, IRecipesCache cache)
     {
         var repositoryBuilder = new IRecipeUpdateOnlyRepositoryBuilder();
 
         if (recipe is not null)
             repositoryBuilder.GetById(recipe);
 
-        return new UpdateRecipebyIdUseCase(ILoggedUserBuilder.Build(user), repositoryBuilder.Build(), unitOfWork);
+        return new UpdateRecipebyIdUseCase(ILoggedUserBuilder.Build(user), repositoryBuilder.Build(), unitOfWork, cache);
     }
 }

@@ -2,6 +2,8 @@ using CommomTestsUtilities;
 using CommomTestsUtilities.Entities;
 using CommomTestsUtilities.Repositories;
 using CommomTestsUtilities.Requests;
+using Moq;
+using MyRecipeBook.Domain.Cache;
 using MyRecipeBook.Application.UseCases.Recipe;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
@@ -16,12 +18,15 @@ public class RegisterRecipeUseCaseTests
     {
         var (user, _) = UserBuilder.Build();
         var request = RequestRecipeJsonBuilder.Build();
-        var useCase = CreateUseCase(user);
+        var cache = new Mock<IRecipesCache>();
+        var useCase = CreateUseCase(user, cache.Object);
 
         var result = await useCase.Execute(request);
 
         result.ShouldNotBeNull();
         result.Title.ShouldBe(request.Title);
+        cache.Verify(item => item.RemoveRecent(user.Id), Times.Once);
+        cache.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -30,7 +35,8 @@ public class RegisterRecipeUseCaseTests
         var (user, _) = UserBuilder.Build();
         var request = RequestRecipeJsonBuilder.Build();
         request.Title = string.Empty;
-        var useCase = CreateUseCase(user);
+        var cache = new Mock<IRecipesCache>();
+        var useCase = CreateUseCase(user, cache.Object);
 
         var exception = await useCase.Execute(request).ShouldThrowAsync<ErrorOnValidationException>();
 
@@ -39,14 +45,15 @@ public class RegisterRecipeUseCaseTests
             errorMessages.Count.ShouldBe(1);
             errorMessages.ShouldContain(ResourceMessagesException.VALIDATION_RECIPE_TITLE_REQUIRED);
         });
+        cache.Verify(item => item.RemoveRecent(It.IsAny<Guid>()), Times.Never);
     }
 
-    private static RegisterRecipeUseCase CreateUseCase(MyRecipeBook.Domain.Entities.User user)
+    private static RegisterRecipeUseCase CreateUseCase(MyRecipeBook.Domain.Entities.User user, IRecipesCache cache)
     {
         var recipeWriteOnlyRepository = IRecipeWriteOnlyRepositoryBuilder.Build();
         var unitOfWork = IUnitOfWorkBuilder.Build();
         var loggedUser = ILoggedUserBuilder.Build(user);
 
-        return new RegisterRecipeUseCase(recipeWriteOnlyRepository, unitOfWork, loggedUser);
+        return new RegisterRecipeUseCase(recipeWriteOnlyRepository, unitOfWork, loggedUser, cache);
     }
 }

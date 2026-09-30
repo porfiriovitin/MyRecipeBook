@@ -2,6 +2,7 @@
 using MyRecipeBook.Application.UseCases.Recipe.Register;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Domain.Cache;
 using MyRecipeBook.Domain.Identity;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.Recipe;
@@ -14,12 +15,14 @@ public class RegisterRecipeUseCase : IRegisterRecipeUseCase
     private readonly IRecipeWriteOnlyRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILoggedUser _loggedUser;
+    private readonly IRecipesCache _cache;
 
-    public RegisterRecipeUseCase(IRecipeWriteOnlyRepository recipeWriteOnlyRepository, IUnitOfWork unitOfWork, ILoggedUser loggedUser)
+    public RegisterRecipeUseCase(IRecipeWriteOnlyRepository recipeWriteOnlyRepository, IUnitOfWork unitOfWork, ILoggedUser loggedUser, IRecipesCache cache)
     {
         _repository = recipeWriteOnlyRepository;
         _unitOfWork = unitOfWork;
         _loggedUser = loggedUser;
+        _cache = cache;
     }
 
     public async Task<ResponseRegisteredRecipeJson> Execute(RequestRecipeJson request)
@@ -32,6 +35,8 @@ public class RegisterRecipeUseCase : IRegisterRecipeUseCase
         await _repository.AddAsync(recipe);
 
         await _unitOfWork.Commit();
+
+        _cache.RemoveRecent(_loggedUser.GetUserId());
 
         return new ResponseRegisteredRecipeJson
         {
