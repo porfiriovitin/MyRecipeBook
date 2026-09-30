@@ -5,6 +5,7 @@ using MyRecipeBook.Application.UseCases.Recipe;
 using MyRecipeBook.Application.UseCases.Recipe.Delete;
 using MyRecipeBook.Application.UseCases.Recipe.DeletebyId;
 using MyRecipeBook.Application.UseCases.Recipe.GetById;
+using MyRecipeBook.Application.UseCases.Recipe.Recent;
 using MyRecipeBook.Application.UseCases.Recipe.Register;
 using MyRecipeBook.Application.UseCases.Recipe.UpdatebyId;
 using MyRecipeBook.Application.UseCases.User;
@@ -34,5 +35,6 @@ public static class DependencyInjectionExtension
         services.AddScoped<IGetRecipeByIdUseCase, GetRecipeByIdUseCase>();
         services.AddScoped<IDeleteRecipebyIdUseCase, DeleteRecipeByIdUseCase>();
         services.AddScoped<IUpdateRecipeByIdUseCase, UpdateRecipebyIdUseCase>();
+        services.AddScoped<IGetRecentRecipesUseCase, GetRecentRecipesUseCase>();
     }
 }

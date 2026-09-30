@@ -26,6 +26,15 @@ internal sealed class RecipeRepository : IRecipeWriteOnlyRepository, IRecipeRead
         return rowsAffected > 0;
     }
 
+    public async Task<IEnumerable<Recipe>> GetRecentRecipes(Guid userId)
+    {
+        return await _dbContext.Recipes
+           .AsNoTracking()
+           .Where(recipe => recipe.Active && recipe.UserId == userId)
+           .OrderByDescending(recipe => recipe.CreatedAt)
+           .Take(6).ToListAsync();
+    }
+
     async Task<Recipe?> IRecipeReadOnlyRepository.GetByIdAsync(Guid recipeId, Guid? userId)
     {
         return await GetFullRecipe().AsNoTracking().FirstOrDefaultAsync(recipe => recipe.Active && recipe.Id == recipeId && recipe.UserId == userId);
@@ -38,9 +47,9 @@ internal sealed class RecipeRepository : IRecipeWriteOnlyRepository, IRecipeRead
 
     private IIncludableQueryable<Recipe, ICollection<RecipeDishType>> GetFullRecipe()
     {
-       return  _dbContext.Recipes
-          .Include(recipe => recipe.Ingredients)
-          .Include(recipe => recipe.Instructions.OrderBy(i => i.Order))
-          .Include(recipe => recipe.DishTypes);
+        return _dbContext.Recipes
+           .Include(recipe => recipe.Ingredients)
+           .Include(recipe => recipe.Instructions.OrderBy(i => i.Order))
+           .Include(recipe => recipe.DishTypes);
     }
 }
