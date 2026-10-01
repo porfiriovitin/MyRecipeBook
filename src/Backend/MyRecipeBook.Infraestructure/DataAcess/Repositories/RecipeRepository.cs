@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using MyRecipeBook.Domain.Dtos;
 using MyRecipeBook.Domain.Entities;
 using MyRecipeBook.Domain.Repositories.Recipe;
 
@@ -26,7 +27,7 @@ internal sealed class RecipeRepository : IRecipeWriteOnlyRepository, IRecipeRead
         return rowsAffected > 0;
     }
 
-    public async Task<IEnumerable<Recipe>> FilterRecipes(Guid userId)
+    public Task<IEnumerable<Recipe>> FilterRecipes(Guid userId, RecipeFilterDto filter)
     {
         throw new NotImplementedException();
     }

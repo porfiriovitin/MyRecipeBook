@@ -1,4 +1,6 @@
-﻿namespace MyRecipeBook.Domain.Repositories.Recipe;
+﻿using MyRecipeBook.Domain.Dtos;
+
+namespace MyRecipeBook.Domain.Repositories.Recipe;
 
 public interface IRecipeReadOnlyRepository
 {
@@ -6,5 +8,5 @@ public interface IRecipeReadOnlyRepository
 
     Task<IEnumerable<Entities.Recipe>> GetRecentRecipes(Guid userId);
 
-    Task<IEnumerable<Entities.Recipe>> FilterRecipes(Guid userId);
+    Task<IEnumerable<Entities.Recipe>> FilterRecipes(Guid userId, RecipeFilterDto filter);
 }

@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Domain.Dtos;
 using MyRecipeBook.Domain.Identity;
 using MyRecipeBook.Domain.Repositories.Recipe;
 
@@ -19,7 +20,15 @@ public class FilterRecipesUseCase : IFilterRecipesUseCase
 
     public async Task<ResponseRecipesJson> Execute(RequestFilterRecipesJson? request)
     {
-        var recipes = await _repository.FilterRecipes(_loggedUser.GetUserId());
+
+        var filter = request is null ? new RecipeFilterDto() : new RecipeFilterDto
+        {
+            SearchTerm = request.SearchTerm,
+            CookTime = request.CookTime,
+            DishTypes = request.DishTypes
+        };
+
+        var recipes = await _repository.FilterRecipes(_loggedUser.GetUserId(), filter);
 
         return new ResponseRecipesJson
         {
