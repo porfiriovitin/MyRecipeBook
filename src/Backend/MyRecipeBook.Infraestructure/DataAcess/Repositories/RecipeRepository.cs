@@ -27,9 +27,17 @@ internal sealed class RecipeRepository : IRecipeWriteOnlyRepository, IRecipeRead
         return rowsAffected > 0;
     }
 
-    public Task<IEnumerable<Recipe>> FilterRecipes(Guid userId, RecipeFilterDto filter)
+    public async Task<IEnumerable<Recipe>> FilterRecipes(Guid userId, RecipeFilterDto filter)
     {
-        throw new NotImplementedException();
+        var query = _dbContext.Recipes.AsNoTracking().Where(recipe => recipe.Active && recipe.UserId == userId);
+
+        if (!string.IsNullOrWhiteSpace(filter.SearchTerm))
+            query = query.Where(recipe => recipe.Title.Contains(filter.SearchTerm) || recipe.Ingredients.Any(i => i.Item.Contains(filter.SearchTerm)));
+
+        if (filter.CookTime is not null)
+            query = query.Where(recipe => recipe.CookTime == filter.CookTime);
+
+        return await query.ToListAsync();
     }
 
     public async Task<IEnumerable<Recipe>> GetRecentRecipes(Guid userId)

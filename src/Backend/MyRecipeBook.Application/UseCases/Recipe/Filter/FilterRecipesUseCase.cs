@@ -24,8 +24,8 @@ public class FilterRecipesUseCase : IFilterRecipesUseCase
         var filter = request is null ? new RecipeFilterDto() : new RecipeFilterDto
         {
             SearchTerm = request.SearchTerm,
-            CookTime = request.CookTime,
-            DishTypes = request.DishTypes
+            CookTime = (Domain.Enums.CookTime?)request.CookTime,
+            DishTypes = (IList<Domain.Enums.DishType>)request.DishTypes
         };
 
         var recipes = await _repository.FilterRecipes(_loggedUser.GetUserId(), filter);

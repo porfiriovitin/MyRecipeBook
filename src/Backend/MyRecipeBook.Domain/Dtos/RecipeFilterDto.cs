@@ -1,4 +1,4 @@
-﻿using MyRecipeBook.Communication.Enums;
+﻿using MyRecipeBook.Domain.Enums;
 
 namespace MyRecipeBook.Domain.Dtos;
 
