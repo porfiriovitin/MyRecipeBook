@@ -37,6 +37,18 @@ internal sealed class RecipeRepository : IRecipeWriteOnlyRepository, IRecipeRead
         if (filter.CookTime is not null)
             query = query.Where(recipe => recipe.CookTime == filter.CookTime);
 
+        if(filter.DishTypes.Any())
+        {
+           var recipesWithDishTypes = query.Where(recipe => recipe.DishTypes.Any(dish => dish.Type == filter.DishTypes[0]));
+
+            foreach (var dishType in filter.DishTypes.Skip(1))
+                recipesWithDishTypes = recipesWithDishTypes.Union(query.Where(recipe => recipe.DishTypes.Any(dish => dish.Type == dishType)));
+            
+
+            query = recipesWithDishTypes;
+
+        }
+
         return await query.ToListAsync();
     }
 
