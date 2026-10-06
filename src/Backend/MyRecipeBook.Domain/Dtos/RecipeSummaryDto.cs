@@ -1,3 +1,3 @@
 ﻿namespace MyRecipeBook.Domain.Dtos;
 
-public record RecipeSummaryDto(Guid id, string Title);
+public record RecipeSummaryDto(Guid Id, string Title);

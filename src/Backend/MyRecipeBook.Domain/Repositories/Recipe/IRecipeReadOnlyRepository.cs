@@ -6,7 +6,7 @@ public interface IRecipeReadOnlyRepository
 {
     Task<Entities.Recipe?> GetByIdAsync(Guid recipeId, Guid? userId);
 
-    Task<IEnumerable<Entities.Recipe>> GetRecentRecipes(Guid userId);
+    Task<IEnumerable<RecipeSummaryDto>> GetRecentRecipes(Guid userId);
 
-    Task<IEnumerable<Entities.Recipe>> FilterRecipes(Guid userId, RecipeFilterDto filter);
+    Task<IEnumerable<RecipeSummaryDto>> FilterRecipes(Guid userId, RecipeFilterDto filter);
 }
