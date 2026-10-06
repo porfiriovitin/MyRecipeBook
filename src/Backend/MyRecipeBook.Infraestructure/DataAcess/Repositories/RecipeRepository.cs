@@ -43,10 +43,8 @@ internal sealed class RecipeRepository : IRecipeWriteOnlyRepository, IRecipeRead
 
             foreach (var dishType in filter.DishTypes.Skip(1))
                 recipesWithDishTypes = recipesWithDishTypes.Union(query.Where(recipe => recipe.DishTypes.Any(dish => dish.Type == dishType)));
-            
 
             query = recipesWithDishTypes;
-
         }
 
         return await query.Select(recipe => new RecipeSummaryDto(recipe.Id, recipe.Title)).ToListAsync();
