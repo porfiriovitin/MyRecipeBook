@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MyRecipeBook.Application.Mappings;
 using MyRecipeBook.Application.UseCases.Login.WithEmailAndPassword;
+using MyRecipeBook.Application.UseCases.PasswordRecovery;
 using MyRecipeBook.Application.UseCases.Recipe;
 using MyRecipeBook.Application.UseCases.Recipe.Delete;
 using MyRecipeBook.Application.UseCases.Recipe.DeletebyId;
@@ -38,5 +39,6 @@ public static class DependencyInjectionExtension
         services.AddScoped<IUpdateRecipeByIdUseCase, UpdateRecipebyIdUseCase>();
         services.AddScoped<IGetRecentRecipesUseCase, GetRecentRecipesUseCase>();
         services.AddScoped<IFilterRecipesUseCase, FilterRecipesUseCase>();
+        services.AddScoped<IPasswordRecoveryCodeUseCase, PasswordRecoveryCodeUseCase>();
     }
 }

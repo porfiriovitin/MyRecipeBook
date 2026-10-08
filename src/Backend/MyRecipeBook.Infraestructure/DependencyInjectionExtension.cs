@@ -6,6 +6,7 @@ using MyRecipeBook.Domain.Identity;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.Recipe;
 using MyRecipeBook.Domain.Repositories.User;
+using MyRecipeBook.Domain.Repositories.VerificationCode;
 using MyRecipeBook.Domain.Security.PasswordHashing;
 using MyRecipeBook.Domain.Security.Tokens;
 using MyRecipeBook.Infraestructure.Cache;
@@ -50,6 +51,9 @@ namespace MyRecipeBook.Infraestructure
             services.AddScoped<IRecipeWriteOnlyRepository, RecipeRepository>();
             services.AddScoped<IRecipeReadOnlyRepository, RecipeRepository>();
             services.AddScoped<IRecipeUpdateOnlyRepository, RecipeRepository>();
+
+            /// :: Verification codes repository.
+            services.AddScoped<IVerificationCodeWriteOnlyRepository, VerificationCodeRepository>();
         }
 
         private static void AddSecurityHandlers(this IServiceCollection services)
