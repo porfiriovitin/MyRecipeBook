@@ -11,16 +11,13 @@ internal class MyRecipeBookDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<Recipe> Recipes { get; set; }
+    public DbSet<VerificationCode> VerificationCodes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Recipe>()
-            .HasOne<User>()
-            .WithMany()
-            .HasForeignKey(recipe => recipe.UserId)
-            .OnDelete(DeleteBehavior.SetNull);
+        modelBuilder.Entity<Recipe>().HasOne<User>().WithMany().HasForeignKey(recipe => recipe.UserId).OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<Recipe>().Property(recipe => recipe.CookTime).HasConversion<string>();
         modelBuilder.Entity<RecipeDishType>().Property(dishType => dishType.Type).HasConversion<string>();
@@ -28,6 +25,10 @@ internal class MyRecipeBookDbContext : DbContext
         modelBuilder.Entity<RecipeIngredient>().Property(ingredient => ingredient.Id).ValueGeneratedNever();
         modelBuilder.Entity<RecipeInstruction>().Property(instruction => instruction.Id).ValueGeneratedNever();
         modelBuilder.Entity<RecipeDishType>().Property(dishType => dishType.Id).ValueGeneratedNever();
+
+        modelBuilder.Entity<VerificationCode>().HasOne<User>().WithMany().HasForeignKey(code => code.UserId).OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<VerificationCode>().Property(code => code.Type).HasConversion<string>();
+
 
     }
 }
