@@ -35,11 +35,7 @@ public class AuthenticationController : ControllerBase
     {
         await useCase.Execute(request);
 
-        return StatusCode(StatusCodes.Status202Accepted, new PayloadResponse
-        {
-            Status = nameof(ResponseStatus.Success),
-            Message = "Password recovery received"
-        });
+        return StatusCode(StatusCodes.Status202Accepted);
     }
 
 }
