@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using MyRecipeBook.Application.UseCases.Login.WithEmailAndPassword;
 using MyRecipeBook.Application.UseCases.PasswordRecovery;
 using MyRecipeBook.Communication.Enums;
@@ -12,6 +13,7 @@ namespace MyRecipeBook.API.Controllers;
 public class AuthenticationController : ControllerBase
 {
     [HttpPost]
+    [EnableRateLimiting("publicEndpoints")]
     [ProducesResponseType(typeof(PayloadResponse<ResponseRegisteredUserJson>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(PayloadResponse), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login([FromServices] ILoginWithEmailAndPasswordUseCase useCase, [FromBody] RequestLoginJson request )
@@ -27,6 +29,7 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost("password-recovery")]
+    [EnableRateLimiting("publicEndpoints")]
     [ProducesResponseType(typeof(PayloadResponse), StatusCodes.Status202Accepted)]
     public async Task<IActionResult> PasswordRecovery([FromServices] IPasswordRecoveryCodeUseCase useCase, [FromBody] RequestPasswordRecoveryJson request)
     {

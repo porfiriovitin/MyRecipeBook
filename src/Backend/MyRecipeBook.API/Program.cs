@@ -19,6 +19,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Threading.RateLimiting;
 
 bool ExecuteMigrationsOnStartup = true;
 
@@ -68,7 +69,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
 
-    options.RequestCultureProviders = [ new AcceptLanguageHeaderRequestCultureProvider() ];
+    options.RequestCultureProviders = [new AcceptLanguageHeaderRequestCultureProvider()];
 });
 
 builder.Services.AddMvc(options => options.Filters.Add<ExceptionFilter>());
@@ -95,7 +96,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         {
             var subject = context.Principal?.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? context.Principal?.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if(Guid.TryParse(subject, out var userId) == false)
+            if (Guid.TryParse(subject, out var userId) == false)
             {
                 context.Fail("Invalid subject");
                 return;
@@ -134,6 +135,33 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 });
 
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    options.AddPolicy("publicEndpoints", context =>
+       RateLimitPartition.GetFixedWindowLimiter(
+           partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+           factory: _ => new FixedWindowRateLimiterOptions
+           {
+               PermitLimit = 10,
+               Window = TimeSpan.FromMinutes(1),
+               QueueLimit = 0,
+               AutoReplenishment = true
+           }));
+
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context => RateLimitPartition.GetSlidingWindowLimiter(
+        partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+        factory: _ => new SlidingWindowRateLimiterOptions
+        {
+            PermitLimit = 300,
+            Window = TimeSpan.FromMinutes(1),
+            SegmentsPerWindow = 6,
+            QueueLimit = 0,
+            AutoReplenishment = true
+        } ));
+});
+
 var app = builder.Build();
 
 if (ExecuteMigrationsOnStartup)
@@ -156,14 +184,19 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseRateLimiter();
 
 app.MapControllers();
 
 app.Run();
 
-async Task ExecuteMigrations() {
+async Task ExecuteMigrations()
+{
 
     await using var scope = app.Services.CreateAsyncScope();
 
