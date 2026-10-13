@@ -54,6 +54,7 @@ namespace MyRecipeBook.Infraestructure
 
             /// :: Verification codes repository.
             services.AddScoped<IVerificationCodeWriteOnlyRepository, VerificationCodeRepository>();
+            services.AddScoped<IVerificationCodeReadOnlyRepository, VerificationCodeRepository>();
         }
 
         private static void AddSecurityHandlers(this IServiceCollection services)

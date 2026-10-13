@@ -190,4 +190,20 @@ token de acceso caducado</value>
   <data name="VALIDATION_RECIPE_NOT_FOUND" xml:space="preserve">
     <value>¡Ups! Receta no encontrada.</value>
   </data>
+  <data name="VALIDATION_CODE_REQUIRED" xml:space="preserve">
+    <value>¡Ups! Se requiere el código.</value>
+  </data>
+  <data name="VALIDATION_RESET_PASSWORD_EMAIL_REQUIRED" xml:space="preserve">
+    <value>¡Ups! Se requiere el email.</value>
+  </data>
+  <data name="VALIDATION_NEW_PASSWORD_REQUIRED" xml:space="preserve">
+    <value>¡Ups! Se requiere el nueva contrasena.</value>
+  </data>
+  <data name="VERIFICATION_CODE_INVALID" xml:space="preserve">
+    <value>¡Ups! Código de verificación no válido.</value>
+  </data>
+  <data name="VERIFICATION_CODE_EXPIRED" xml:space="preserve">
+    <value>¡Ups! 
+El código de verificación ha caducado.</value>
+  </data>
 </root>

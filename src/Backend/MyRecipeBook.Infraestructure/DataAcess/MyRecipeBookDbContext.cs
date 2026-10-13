@@ -28,7 +28,5 @@ internal class MyRecipeBookDbContext : DbContext
 
         modelBuilder.Entity<VerificationCode>().HasOne<User>().WithMany().HasForeignKey(code => code.UserId).OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<VerificationCode>().Property(code => code.Type).HasConversion<string>();
-
-
     }
 }

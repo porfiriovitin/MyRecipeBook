@@ -7,7 +7,7 @@ using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Domain.Repositories.VerificationCode;
 using System.Security.Cryptography;
 
-namespace MyRecipeBook.Application.UseCases.PasswordRecovery;
+namespace MyRecipeBook.Application.UseCases.PasswordRecovery.RequestCode;
 
 public class PasswordRecoveryCodeUseCase : IPasswordRecoveryCodeUseCase
 {
@@ -39,7 +39,7 @@ public class PasswordRecoveryCodeUseCase : IPasswordRecoveryCodeUseCase
 
         /// :: Email with the code for the user
         
-        await _verificationCodeRepository.Add(verificationCode);
+        await _verificationCodeRepository.Replace(verificationCode);
 
         await _unitOfWork.Commit();
     }

@@ -189,4 +189,19 @@
   <data name="VALIDATION_RECIPE_NOT_FOUND" xml:space="preserve">
     <value>Oops! Recipe not found.</value>
   </data>
+  <data name="VALIDATION_CODE_REQUIRED" xml:space="preserve">
+    <value>Code is required.</value>
+  </data>
+  <data name="VALIDATION_RESET_PASSWORD_EMAIL_REQUIRED" xml:space="preserve">
+    <value>Email is required.</value>
+  </data>
+  <data name="VALIDATION_NEW_PASSWORD_REQUIRED" xml:space="preserve">
+    <value>New password is required.</value>
+  </data>
+  <data name="VERIFICATION_CODE_INVALID" xml:space="preserve">
+    <value>Oops! Invalid verification code</value>
+  </data>
+  <data name="VERIFICATION_CODE_EXPIRED" xml:space="preserve">
+    <value>Oops! Verification code expired.</value>
+  </data>
 </root>

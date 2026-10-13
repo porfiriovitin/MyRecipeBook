@@ -10,7 +10,7 @@ public class IVerificationCodeWriteOnlyRepositoryBuilder
 
     public void Add(Action<VerificationCode> callback)
     {
-        _mock.Setup(repository => repository.Add(It.IsAny<VerificationCode>()))
+        _mock.Setup(repository => repository.Replace(It.IsAny<VerificationCode>()))
             .Callback(callback)
             .Returns(Task.CompletedTask);
     }

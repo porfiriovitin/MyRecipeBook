@@ -39,7 +39,7 @@ public class PasswordRecoveryCodeUseCaseTests
         int.Parse(savedCode.Code).ShouldBeInRange(1, 999999);
 
         Mock.Get(userRepository).Verify(repository => repository.GetByEmail(request.Email), Times.Once);
-        Mock.Get(verificationCodeRepository).Verify(repository => repository.Add(It.IsAny<VerificationCode>()), Times.Once);
+        Mock.Get(verificationCodeRepository).Verify(repository => repository.Replace(It.IsAny<VerificationCode>()), Times.Once);
         Mock.Get(unitOfWork).Verify(repository => repository.Commit(), Times.Once);
     }
 
@@ -56,7 +56,7 @@ public class PasswordRecoveryCodeUseCaseTests
         await useCase.Execute(request);
 
         Mock.Get(userRepository).Verify(repository => repository.GetByEmail(request.Email), Times.Once);
-        Mock.Get(verificationCodeRepository).Verify(repository => repository.Add(It.IsAny<VerificationCode>()), Times.Never);
+        Mock.Get(verificationCodeRepository).Verify(repository => repository.Replace(It.IsAny<VerificationCode>()), Times.Never);
         Mock.Get(unitOfWork).Verify(repository => repository.Commit(), Times.Never);
     }
 }

@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using MyRecipeBook.Application.UseCases.Login.WithEmailAndPassword;
-using MyRecipeBook.Application.UseCases.PasswordRecovery;
+using MyRecipeBook.Application.UseCases.PasswordRecovery.RequestCode;
+using MyRecipeBook.Application.UseCases.PasswordRecovery.ResetPassword;
 using MyRecipeBook.Communication.Enums;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
@@ -37,6 +38,19 @@ public class AuthenticationController : ControllerBase
 
         return StatusCode(StatusCodes.Status202Accepted);
     }
+
+    [HttpPost("password-recovery/reset")]
+    [EnableRateLimiting("publicEndpoints")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(PayloadResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ResetPassword([FromServices] IResetPasswordUseCase useCase, [FromBody] RequestResetPasswordJson request)
+    {
+        await useCase.Execute(request);
+
+        return StatusCode(StatusCodes.Status204NoContent);
+    }
+
+
 
 }
 

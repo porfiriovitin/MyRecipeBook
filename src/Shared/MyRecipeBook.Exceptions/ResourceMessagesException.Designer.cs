@@ -97,6 +97,15 @@ namespace MyRecipeBook.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Code is required..
+        /// </summary>
+        public static string VALIDATION_CODE_REQUIRED {
+            get {
+                return ResourceManager.GetString("VALIDATION_CODE_REQUIRED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! The current password is incorrect..
         /// </summary>
         public static string VALIDATION_CURRENT_PASSWORD {
@@ -147,6 +156,15 @@ namespace MyRecipeBook.Exceptions {
         public static string VALIDATION_NAME_REQUIRED {
             get {
                 return ResourceManager.GetString("VALIDATION_NAME_REQUIRED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a New password is required..
+        /// </summary>
+        public static string VALIDATION_NEW_PASSWORD_REQUIRED {
+            get {
+                return ResourceManager.GetString("VALIDATION_NEW_PASSWORD_REQUIRED", resourceCulture);
             }
         }
         
@@ -268,11 +286,38 @@ namespace MyRecipeBook.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Email is required..
+        /// </summary>
+        public static string VALIDATION_RESET_PASSWORD_EMAIL_REQUIRED {
+            get {
+                return ResourceManager.GetString("VALIDATION_RESET_PASSWORD_EMAIL_REQUIRED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! You don&apos;t have acess to this resource.
         /// </summary>
         public static string VALIDATION_RESOURCE_ACESS_DENIED {
             get {
                 return ResourceManager.GetString("VALIDATION_RESOURCE_ACESS_DENIED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! Verification code expired..
+        /// </summary>
+        public static string VERIFICATION_CODE_EXPIRED {
+            get {
+                return ResourceManager.GetString("VERIFICATION_CODE_EXPIRED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Oops! Invalid verification code.
+        /// </summary>
+        public static string VERIFICATION_CODE_INVALID {
+            get {
+                return ResourceManager.GetString("VERIFICATION_CODE_INVALID", resourceCulture);
             }
         }
     }
