@@ -13,7 +13,7 @@ namespace MyRecipeBook.API.Controllers;
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
-    [HttpPost]
+    [HttpPost("login")]
     [EnableRateLimiting("publicEndpoints")]
     [ProducesResponseType(typeof(PayloadResponse<ResponseRegisteredUserJson>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(PayloadResponse), StatusCodes.Status401Unauthorized)]

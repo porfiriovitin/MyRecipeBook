@@ -8,6 +8,8 @@ using MyRecipeBook.Domain.Security.Tokens;
 using MyRecipeBook.Infraestructure.DataAcess;
 using Microsoft.Extensions.DependencyInjection;
 using MyRecipeBook.Domain.Security.PasswordHashing;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace WebApi.Tests;
 
@@ -26,6 +28,9 @@ public class MyRecipeBookApplicationFactory : WebApplicationFactory<Program>, IA
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.ConfigureServices(services => services.AddControllers(options =>
+            options.Conventions.Add(new DisablePublicEndpointRateLimitingConvention())));
+
         builder.UseEnvironment("Tests").ConfigureAppConfiguration((_, configuration) =>
         {
             var parameters = new Dictionary<string, string?>
@@ -65,5 +70,17 @@ public class MyRecipeBookApplicationFactory : WebApplicationFactory<Program>, IA
     }
 
     Task IAsyncLifetime.DisposeAsync() => _postgreSqlContainer.StopAsync();
+
+    private sealed class DisablePublicEndpointRateLimitingConvention : IActionModelConvention
+    {
+        public void Apply(ActionModel action)
+        {
+            if (action.Attributes.OfType<EnableRateLimitingAttribute>().Any(attribute => attribute.PolicyName == "publicEndpoints"))
+            {
+                foreach (var selector in action.Selectors)
+                    selector.EndpointMetadata.Add(new DisableRateLimitingAttribute());
+            }
+        }
+    }
 
 }

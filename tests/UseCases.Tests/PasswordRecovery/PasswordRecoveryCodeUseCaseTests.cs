@@ -2,7 +2,7 @@ using CommomTestsUtilities.Entities;
 using CommomTestsUtilities.Repositories;
 using CommomTestsUtilities.Requests;
 using Moq;
-using MyRecipeBook.Application.UseCases.PasswordRecovery;
+using MyRecipeBook.Application.UseCases.PasswordRecovery.RequestCode;
 using MyRecipeBook.Domain.Entities;
 using MyRecipeBook.Domain.Enums;
 using Shouldly;

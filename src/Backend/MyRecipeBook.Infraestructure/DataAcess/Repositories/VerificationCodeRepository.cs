@@ -25,6 +25,6 @@ internal sealed class VerificationCodeRepository : IVerificationCodeWriteOnlyRep
 
     public async Task Delete(VerificationCode verificationCode) => await _dbContext.VerificationCodes.Where(vc => vc.Id == verificationCode.Id).ExecuteDeleteAsync();
 
-    public async Task<VerificationCode?> GetVerificationCodeAsync(Guid UserId, string Code, VerificationCodeType type) => await _dbContext.VerificationCodes.FirstOrDefaultAsync(vc => vc.UserId == UserId && vc.Code == Code && vc.Type == type);
+    public async Task<VerificationCode?> GetVerificationCodeAsync(Guid UserId, string Code, VerificationCodeType type) => await _dbContext.VerificationCodes.SingleOrDefaultAsync(vc => vc.UserId == UserId && vc.Code == Code && vc.Type == type);
     
 }
