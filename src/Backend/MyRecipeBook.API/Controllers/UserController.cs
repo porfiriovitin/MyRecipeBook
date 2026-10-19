@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using MyRecipeBook.Application.UseCases.User.ChangePassword;
+using MyRecipeBook.Application.UseCases.User.ChangeProfilePicture;
 using MyRecipeBook.Application.UseCases.User.Profile;
 using MyRecipeBook.Application.UseCases.User.Register;
 using MyRecipeBook.Application.UseCases.User.Update;
@@ -74,5 +75,16 @@ public class UserController : ControllerBase
             Status = nameof(ResponseStatus.Success),
             Message = "Password updated successfully.",
         });
+    }
+
+    [HttpPut("profile-picture")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(PayloadResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ChangeProfilePicture([FromServices] IChangeProfilePictureUseCase useCase, IFormFile profilePicture)
+    {
+        await useCase.Execute(profilePicture.OpenReadStream());
+
+        return NoContent();
     }
 }

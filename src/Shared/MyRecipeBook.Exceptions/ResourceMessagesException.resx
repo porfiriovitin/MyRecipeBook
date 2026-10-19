@@ -204,4 +204,7 @@
   <data name="VERIFICATION_CODE_EXPIRED" xml:space="preserve">
     <value>Oops! Verification code expired.</value>
   </data>
+  <data name="VALIDATION_ONLY_IMAGES_ACCEPTED" xml:space="preserve">
+    <value>Only PNG or JPG/JPEG images allowed</value>
+  </data>
 </root>

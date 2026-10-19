@@ -13,6 +13,7 @@ using MyRecipeBook.Application.UseCases.Recipe.Register;
 using MyRecipeBook.Application.UseCases.Recipe.UpdatebyId;
 using MyRecipeBook.Application.UseCases.User;
 using MyRecipeBook.Application.UseCases.User.ChangePassword;
+using MyRecipeBook.Application.UseCases.User.ChangeProfilePicture;
 using MyRecipeBook.Application.UseCases.User.Profile;
 using MyRecipeBook.Application.UseCases.User.Register;
 using MyRecipeBook.Application.UseCases.User.Update;
@@ -42,5 +43,6 @@ public static class DependencyInjectionExtension
         services.AddScoped<IFilterRecipesUseCase, FilterRecipesUseCase>();
         services.AddScoped<IPasswordRecoveryCodeUseCase, PasswordRecoveryCodeUseCase>();
         services.AddScoped<IResetPasswordUseCase, ResetPasswordUseCase>();
+        services.AddScoped<IChangeProfilePictureUseCase, ChangeProfilePictureUseCase>();
     }
 }
