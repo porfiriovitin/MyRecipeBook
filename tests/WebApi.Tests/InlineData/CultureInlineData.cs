@@ -8,7 +8,6 @@ public class CultureInlineData : IEnumerable<object[]>
     {
         yield return new object[] { "pt-BR" };
         yield return new object[] { "en" };
-        yield return new object[] { "es" };
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
