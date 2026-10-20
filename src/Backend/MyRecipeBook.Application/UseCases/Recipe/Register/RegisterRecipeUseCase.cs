@@ -1,11 +1,17 @@
-﻿using Mapster;
+﻿using FileTypeChecker.Extensions;
+using FileTypeChecker.Types;
+using FluentValidation.Results;
+using Mapster;
+using MyRecipeBook.Application.Extensions;
 using MyRecipeBook.Application.UseCases.Recipe.Register;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Cache;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Identity;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.Recipe;
+using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
 
 namespace MyRecipeBook.Application.UseCases.Recipe;
@@ -25,13 +31,21 @@ public class RegisterRecipeUseCase : IRegisterRecipeUseCase
         _cache = cache;
     }
 
-    public async Task<ResponseRegisteredRecipeJson> Execute(RequestRecipeJson request)
+    public async Task<ResponseRegisteredRecipeJson> Execute(RequestRecipeJson request, Stream? recipeIlustration)
     {
         await ValidateAndThrowOnFailures(request);
 
+        if(recipeIlustration is not null)
+        {
+            var contentType = recipeIlustration.DetectImageContentType();
+
+            if (contentType.IsEmpty())
+                throw new ErrorOnValidationException([ResourceMessagesException.VALIDATION_ONLY_IMAGES_ACCEPTED]);    
+        }
+
         var recipe = request.Adapt<Domain.Entities.Recipe>();
         recipe.UserId = _loggedUser.GetUserId();
-
+                
         await _repository.AddAsync(recipe);
 
         await _unitOfWork.Commit();

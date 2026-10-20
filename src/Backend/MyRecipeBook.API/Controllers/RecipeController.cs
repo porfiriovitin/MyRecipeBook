@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using MyRecipeBook.Communication.Enums;
+using Microsoft.AspNetCore.Authorization;
+using MyRecipeBook.Communication.Requests;
+using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Application.UseCases.Recipe.Delete;
 using MyRecipeBook.Application.UseCases.Recipe.Filter;
 using MyRecipeBook.Application.UseCases.Recipe.GetById;
 using MyRecipeBook.Application.UseCases.Recipe.Recent;
 using MyRecipeBook.Application.UseCases.Recipe.Register;
 using MyRecipeBook.Application.UseCases.Recipe.UpdatebyId;
-using MyRecipeBook.Communication.Enums;
-using MyRecipeBook.Communication.Requests;
-using MyRecipeBook.Communication.Responses;
 
 namespace MyRecipeBook.API.Controllers;
 
@@ -20,9 +20,9 @@ public class RecipeController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(PayloadResponse<ResponseRegisteredRecipeJson>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(PayloadResponse<object>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Register([FromBody] RequestRecipeJson request, [FromServices] IRegisterRecipeUseCase useCase)
+    public async Task<IActionResult> Register([FromForm] RequestRecipeJson request, [FromServices] IRegisterRecipeUseCase useCase, IFormFile? recipeIlustration)
     {
-        ResponseRegisteredRecipeJson result = await useCase.Execute(request);
+        ResponseRegisteredRecipeJson result = await useCase.Execute(request, recipeIlustration?.OpenReadStream());
 
         return StatusCode(StatusCodes.Status201Created, new PayloadResponse<ResponseRegisteredRecipeJson>
         {
