@@ -14,6 +14,8 @@ internal static class StreamExtensions
         else if (stream.Is<PortableNetworkGraphic>())
             contentType = "image/png";
 
+        stream.Position = 0;
+
         return contentType;
     }
 }
