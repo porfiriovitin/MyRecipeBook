@@ -11,6 +11,7 @@ using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Identity;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.Recipe;
+using MyRecipeBook.Domain.Storage;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
 
@@ -22,26 +23,20 @@ public class RegisterRecipeUseCase : IRegisterRecipeUseCase
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILoggedUser _loggedUser;
     private readonly IRecipesCache _cache;
+    private readonly IStorageService _storageService;
 
-    public RegisterRecipeUseCase(IRecipeWriteOnlyRepository recipeWriteOnlyRepository, IUnitOfWork unitOfWork, ILoggedUser loggedUser, IRecipesCache cache)
+    public RegisterRecipeUseCase(IRecipeWriteOnlyRepository recipeWriteOnlyRepository, IUnitOfWork unitOfWork, ILoggedUser loggedUser, IRecipesCache cache, IStorageService storageService)
     {
         _repository = recipeWriteOnlyRepository;
         _unitOfWork = unitOfWork;
         _loggedUser = loggedUser;
         _cache = cache;
+        _storageService = storageService;
     }
 
     public async Task<ResponseRegisteredRecipeJson> Execute(RequestRecipeJson request, Stream? recipeIlustration)
     {
         await ValidateAndThrowOnFailures(request);
-
-        if(recipeIlustration is not null)
-        {
-            var contentType = recipeIlustration.DetectImageContentType();
-
-            if (contentType.IsEmpty())
-                throw new ErrorOnValidationException([ResourceMessagesException.VALIDATION_ONLY_IMAGES_ACCEPTED]);    
-        }
 
         var recipe = request.Adapt<Domain.Entities.Recipe>();
         recipe.UserId = _loggedUser.GetUserId();
@@ -49,6 +44,16 @@ public class RegisterRecipeUseCase : IRegisterRecipeUseCase
         await _repository.AddAsync(recipe);
 
         await _unitOfWork.Commit();
+
+        if (recipeIlustration is not null)
+        {
+            var contentType = recipeIlustration.DetectImageContentType();
+
+            if (contentType.IsEmpty())
+                throw new ErrorOnValidationException([ResourceMessagesException.VALIDATION_ONLY_IMAGES_ACCEPTED]);
+
+            await _storageService.UploadIllustration(recipe, recipeIlustration, contentType);
+        }
 
         _cache.RemoveRecent(_loggedUser.GetUserId());
 

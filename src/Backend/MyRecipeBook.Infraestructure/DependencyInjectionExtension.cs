@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Storage.Blobs;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyRecipeBook.Domain.Cache;
@@ -9,12 +10,14 @@ using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Domain.Repositories.VerificationCode;
 using MyRecipeBook.Domain.Security.PasswordHashing;
 using MyRecipeBook.Domain.Security.Tokens;
+using MyRecipeBook.Domain.Storage;
 using MyRecipeBook.Infraestructure.Cache;
 using MyRecipeBook.Infraestructure.DataAcess;
 using MyRecipeBook.Infraestructure.DataAcess.Repositories;
 using MyRecipeBook.Infraestructure.Identity;
 using MyRecipeBook.Infraestructure.Security.PasswordHashing;
 using MyRecipeBook.Infraestructure.Security.Tokens.Acess;
+using MyRecipeBook.Infraestructure.Storage;
 
 namespace MyRecipeBook.Infraestructure
 {
@@ -27,6 +30,7 @@ namespace MyRecipeBook.Infraestructure
             AddDbContext(services, configuration);
             AddSecurityHandlers(services);
             AddCacheHandlers(services);
+            AddStorageHandlers(services, configuration);
         }
 
         private static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
@@ -78,6 +82,17 @@ namespace MyRecipeBook.Infraestructure
         {
             services.AddMemoryCache();
             services.AddSingleton<IRecipesCache, RecipesCache>();
+        }
+
+        private static void AddStorageHandlers(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddScoped<IStorageService>(config =>
+            {
+                var connectionString = configuration.GetConnectionString("BlobStorageConnection");
+
+                return new AzureStorageService(new BlobServiceClient(connectionString));
+
+            });
         }
     }
 }
